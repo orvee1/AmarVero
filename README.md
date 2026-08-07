@@ -147,6 +147,16 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added Eloquent relationships and casts across the domain models, including customer relationships on `App\Models\User`.
 - Added `EcommerceDomainSchemaTest` to verify Phase 1 tables, casts, and relationship persistence across catalog and commerce flows.
 
+## Phase 2 Log
+
+- Added `App\Support\AdminPermissions` as the single source of truth for admin roles, permission groups, and role assignments.
+- Updated `RolePermissionSeeder` to seed all permissions and roles from the centralized matrix.
+- Added `EnsureAdminAccess` middleware and registered the `admin` middleware alias.
+- Added a Super Admin `Gate::before` override and policy discovery for `App\Models` to `App\Policies`.
+- Added a shared `AdminPolicy` base class for admin CRUD and special actions such as review moderation, order status changes, payment updates, refunds, exports, and invoice printing.
+- Added model policies for the Phase 1 catalog, customer, cart, wishlist, coupon, order, payment, return, refund, review, content, shipping, settings, footer, and social-link models.
+- Added `AdminAuthorizationTest` to verify admin middleware access, role boundaries, policy decisions, and Super Admin override behavior.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.
