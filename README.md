@@ -207,6 +207,17 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Updated storefront navigation fallbacks and CMS link generation so category and collection menu items resolve through named storefront routes.
 - Added `PhaseSevenStorefrontTest` to verify public catalog route contexts, Livewire search/filter behavior, published visibility, active sale windows, variant selection, size guides, reviews, related products, and draft product 404 behavior.
 
+## Phase 8 Log
+
+- Added `App\Support\Cart\CartManager` for guest and customer active carts, server-side price snapshots, stock/backorder validation, quantity limits, cart summaries, item updates, clearing, and guest-to-customer merge logic.
+- Added `App\Support\Cart\WishlistManager` for authenticated default wishlists, saved product/variant validation, item counts, item removal, and wishlist-to-cart workflows.
+- Added public cart routes and controller-backed add-to-cart endpoints, plus authenticated wishlist routes and save-to-wishlist endpoints.
+- Added a login event listener that merges the current guest session cart into the authenticated customer cart while preserving server-side quantity rules.
+- Added responsive cart and wishlist Livewire pages with real database-backed items, quantity controls, removal, cart subtotal, move-to-cart, and empty states.
+- Updated product detail pages and product cards with functional add-to-cart and wishlist actions.
+- Updated storefront navigation with real cart and wishlist counts.
+- Added `PhaseEightCartWishlistTest` to verify guest cart writes, server-side pricing/stock validation, cart quantity updates, wishlist save/remove/move behavior, protected wishlist access, and guest cart merging on login.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

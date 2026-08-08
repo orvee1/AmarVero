@@ -20,6 +20,7 @@ class CartItem extends Model
         return [
             'options' => 'array',
             'quantity' => 'integer',
+            'unit_price_snapshot' => 'decimal:2',
         ];
     }
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Storefront\CartItemController;
+use App\Http\Controllers\Storefront\WishlistItemController;
 use App\Http\Controllers\StorefrontController;
 use App\Livewire\Admin\Catalog\AttributeIndex;
 use App\Livewire\Admin\Catalog\BrandIndex;
@@ -17,8 +19,10 @@ use App\Livewire\Admin\Content\ContentLibraryIndex;
 use App\Livewire\Admin\Content\FooterContentIndex;
 use App\Livewire\Admin\Content\HomepageContentIndex;
 use App\Livewire\Admin\Content\NavigationMenuIndex;
+use App\Livewire\Storefront\CartPage;
 use App\Livewire\Storefront\ProductListing;
 use App\Livewire\Storefront\ProductShow;
+use App\Livewire\Storefront\WishlistPage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', StorefrontController::class)->name('home');
@@ -34,6 +38,13 @@ Route::livewire('categories/{slug}', ProductListing::class)->name('categories.sh
 Route::livewire('brands/{slug}', ProductListing::class)->name('brands.show');
 Route::livewire('collections/{slug}', ProductListing::class)->name('collections.show');
 Route::livewire('products/{product:slug}', ProductShow::class)->name('products.show');
+Route::livewire('cart', CartPage::class)->name('cart');
+Route::post('cart/items', [CartItemController::class, 'store'])->name('cart.items.store');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::livewire('wishlist', WishlistPage::class)->name('wishlist');
+    Route::post('wishlist/items', [WishlistItemController::class, 'store'])->name('wishlist.items.store');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

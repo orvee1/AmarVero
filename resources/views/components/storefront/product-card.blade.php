@@ -11,6 +11,9 @@
     $price = $catalog->effectivePrice($product);
     $discountPercent = $catalog->discountPercent($product);
     $colorValues = $catalog->colorValues($product);
+    $activeVariants = $product->variants->where('is_active', true);
+    $quickVariant = $activeVariants->count() === 1 ? $activeVariants->first() : null;
+    $quickVariantCanPurchase = $quickVariant && ($quickVariant->availableQuantity() > 0 || $quickVariant->allow_backorder || $product->allow_backorder);
 @endphp
 
 <article {{ $attributes->class('group overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-zinc-900') }}>
@@ -89,9 +92,37 @@
         </div>
     </a>
 
-    <div class="border-t border-zinc-200 dark:border-white/10">
+    <div class="grid border-t border-zinc-200 dark:border-white/10 {{ $quickVariantCanPurchase ? 'grid-cols-2' : '' }}">
+        @if ($quickVariantCanPurchase)
+            <form method="POST" action="{{ route('cart.items.store') }}">
+                @csrf
+                <input type="hidden" name="product_variant_id" value="{{ $quickVariant->id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="block w-full px-4 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-white/5">
+                    {{ __('Add to cart') }}
+                </button>
+            </form>
+        @endif
+
         <a href="{{ route('products.show', ['product' => $product->slug]) }}" class="block px-4 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-white/5">
             {{ __('View details') }}
         </a>
+
+        @auth
+            <form method="POST" action="{{ route('wishlist.items.store') }}" class="{{ $quickVariantCanPurchase ? 'col-span-2 border-t border-zinc-200 dark:border-white/10' : 'border-t border-zinc-200 dark:border-white/10' }}">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                @if ($quickVariant)
+                    <input type="hidden" name="product_variant_id" value="{{ $quickVariant->id }}">
+                @endif
+                <button type="submit" class="block w-full px-4 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-white/5">
+                    {{ __('Save to wishlist') }}
+                </button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="{{ $quickVariantCanPurchase ? 'col-span-2' : '' }} border-t border-zinc-200 px-4 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-white/10 dark:text-zinc-200 dark:hover:bg-white/5">
+                {{ __('Sign in to save') }}
+            </a>
+        @endauth
     </div>
 </article>

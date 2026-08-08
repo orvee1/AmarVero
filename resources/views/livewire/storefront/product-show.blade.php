@@ -8,6 +8,7 @@
     $discountPercent = $catalog->discountPercent($product);
     $reviewCount = (int) ($product->approved_reviews_count ?? 0);
     $averageRating = (float) ($product->approved_reviews_avg_rating ?? 0);
+    $canPurchase = $selectedVariant && ($available > 0 || $selectedVariant->allow_backorder || $product->allow_backorder);
 @endphp
 
 <section class="bg-zinc-50 dark:bg-zinc-950">
@@ -19,6 +20,12 @@
             <span aria-hidden="true">/</span>
             <span>{{ $product->name }}</span>
         </nav>
+
+        @if (session('status'))
+            <div class="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-medium text-teal-800 dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-100">
+                {{ session('status') }}
+            </div>
+        @endif
 
         <div class="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(24rem,0.95fr)] lg:items-start">
             <section class="grid gap-4">
@@ -158,6 +165,45 @@
                         @endif
                     </section>
                 @endif
+
+                <section class="space-y-4 rounded-lg border border-zinc-200 bg-white p-5 dark:border-white/10 dark:bg-zinc-900">
+                    <div class="flex flex-wrap items-end justify-between gap-4">
+                        <div>
+                            <h2 class="text-sm font-semibold text-zinc-950 dark:text-white">{{ __('Purchase') }}</h2>
+                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-300">{{ __('Price shown before shipping and discounts.') }}</p>
+                        </div>
+
+                        <div class="flex items-center rounded-lg border border-zinc-300 dark:border-white/15">
+                            <button type="button" wire:click="decrementQuantity" class="flex size-10 items-center justify-center text-lg font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-white/5" aria-label="{{ __('Decrease quantity') }}">-</button>
+                            <input wire:model.live.debounce.250ms="quantity" type="number" min="1" max="{{ \App\Support\Cart\CartManager::MAX_QUANTITY_PER_ITEM }}" class="h-10 w-16 border-x border-zinc-300 bg-white text-center text-sm font-semibold text-zinc-950 dark:border-white/15 dark:bg-zinc-950 dark:text-white">
+                            <button type="button" wire:click="incrementQuantity" class="flex size-10 items-center justify-center text-lg font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-white/5" aria-label="{{ __('Increase quantity') }}">+</button>
+                        </div>
+                    </div>
+
+                    @error('cart')
+                        <p class="text-sm font-medium text-rose-700 dark:text-rose-200">{{ $message }}</p>
+                    @enderror
+
+                    @error('wishlist')
+                        <p class="text-sm font-medium text-rose-700 dark:text-rose-200">{{ $message }}</p>
+                    @enderror
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        @if ($canPurchase)
+                            <x-ui.button type="button" wire:click="addToCart">{{ __('Add to cart') }}</x-ui.button>
+                        @else
+                            <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-100">
+                                {{ __('This option is unavailable for cart purchase.') }}
+                            </div>
+                        @endif
+
+                        @auth
+                            <x-ui.button type="button" variant="secondary" wire:click="addToWishlist">{{ __('Save to wishlist') }}</x-ui.button>
+                        @else
+                            <x-ui.button :href="route('login')" variant="secondary">{{ __('Sign in to save') }}</x-ui.button>
+                        @endauth
+                    </div>
+                </section>
 
                 <section class="grid gap-3 rounded-lg border border-zinc-200 bg-white p-5 text-sm text-zinc-600 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-300 sm:grid-cols-3">
                     <div>

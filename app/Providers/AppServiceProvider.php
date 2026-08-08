@@ -2,12 +2,17 @@
 
 namespace App\Providers;
 
+use App\Listeners\MergeGuestCartOnLogin;
 use App\Models\User;
 use App\Support\AdminPermissions;
+use App\Support\Cart\CartManager;
+use App\Support\Cart\WishlistManager;
 use App\Support\Storefront\StorefrontContent;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->configureEvents();
         $this->configureViewComposers();
     }
 
@@ -73,6 +79,8 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('components.layouts.storefront', function ($view): void {
             $content = app(StorefrontContent::class);
+            $cart = app(CartManager::class);
+            $wishlist = app(WishlistManager::class);
 
             $view->with([
                 'storefrontAnnouncement' => $content->announcementBar(),
@@ -80,7 +88,14 @@ class AppServiceProvider extends ServiceProvider
                 'storefrontFooterSections' => $content->footerSections(),
                 'storefrontSocialLinks' => $content->socialLinks(),
                 'storefrontContent' => $content,
+                'storefrontCartItemCount' => $cart->cartItemCount(),
+                'storefrontWishlistItemCount' => $wishlist->itemCount(),
             ]);
         });
+    }
+
+    protected function configureEvents(): void
+    {
+        Event::listen(Login::class, MergeGuestCartOnLogin::class);
     }
 }

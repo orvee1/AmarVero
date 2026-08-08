@@ -16,6 +16,18 @@
             </div>
         </header>
 
+        @if (session('status'))
+            <div class="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-medium text-teal-800 dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-100">
+                {{ session('status') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800 dark:border-rose-400/20 dark:bg-rose-400/10 dark:text-rose-100">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
         <section class="grid gap-4 rounded-lg border border-zinc-200 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
             <div class="grid gap-3 lg:grid-cols-[1fr_auto_auto_auto]">
                 <label class="grid gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-200">

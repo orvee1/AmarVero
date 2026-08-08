@@ -59,6 +59,12 @@
                     @endif
 
                     @auth
+                        <x-ui.button variant="subtle" :href="route('wishlist')">
+                            {{ __('Wishlist') }}
+                            @if ($storefrontWishlistItemCount > 0)
+                                <span class="ml-1 rounded-full bg-zinc-950 px-1.5 py-0.5 text-[0.625rem] text-white dark:bg-white dark:text-zinc-950">{{ $storefrontWishlistItemCount }}</span>
+                            @endif
+                        </x-ui.button>
                         <x-ui.button variant="subtle" :href="route('dashboard')">{{ __('My account') }}</x-ui.button>
                     @else
                         <x-ui.button variant="subtle" :href="route('login')">{{ __('Sign in') }}</x-ui.button>
@@ -67,6 +73,13 @@
                             <x-ui.button variant="primary" :href="route('register')">{{ __('Create account') }}</x-ui.button>
                         @endif
                     @endauth
+
+                    <x-ui.button variant="secondary" :href="route('cart')">
+                        {{ __('Cart') }}
+                        @if ($storefrontCartItemCount > 0)
+                            <span class="ml-1 rounded-full bg-zinc-950 px-1.5 py-0.5 text-[0.625rem] text-white dark:bg-white dark:text-zinc-950">{{ $storefrontCartItemCount }}</span>
+                        @endif
+                    </x-ui.button>
                 </nav>
 
                 <details class="relative md:hidden">
@@ -106,6 +119,7 @@
                         @endif
 
                         @auth
+                            <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('wishlist') }}">{{ __('Wishlist') }} @if ($storefrontWishlistItemCount > 0) ({{ $storefrontWishlistItemCount }}) @endif</a>
                             <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('dashboard') }}">{{ __('My account') }}</a>
                         @else
                             <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('login') }}">{{ __('Sign in') }}</a>
@@ -114,6 +128,8 @@
                                 <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('register') }}">{{ __('Create account') }}</a>
                             @endif
                         @endauth
+
+                        <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('cart') }}">{{ __('Cart') }} @if ($storefrontCartItemCount > 0) ({{ $storefrontCartItemCount }}) @endif</a>
                     </nav>
                 </details>
             </x-ui.container>
@@ -164,10 +180,13 @@
                         <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('sale') }}">{{ __('Sale') }}</a>
 
                         @auth
+                            <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('wishlist') }}">{{ __('Wishlist') }}</a>
                             <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('dashboard') }}">{{ __('My account') }}</a>
                         @else
                             <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('login') }}">{{ __('Sign in') }}</a>
                         @endauth
+
+                        <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('cart') }}">{{ __('Cart') }}</a>
                     </nav>
                 @endif
             </x-ui.container>

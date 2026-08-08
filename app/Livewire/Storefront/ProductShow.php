@@ -6,9 +6,13 @@ use App\Models\AttributeValue;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
+use App\Models\User;
+use App\Support\Cart\CartManager;
+use App\Support\Cart\WishlistManager;
 use App\Support\Storefront\ProductCatalog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class ProductShow extends Component
@@ -60,12 +64,56 @@ class ProductShow extends Component
 
     public function incrementQuantity(): void
     {
-        $this->quantity = min(20, $this->quantity + 1);
+        $this->quantity = min(CartManager::MAX_QUANTITY_PER_ITEM, $this->quantity + 1);
     }
 
     public function decrementQuantity(): void
     {
         $this->quantity = max(1, $this->quantity - 1);
+    }
+
+    public function updatedQuantity(mixed $value): void
+    {
+        $this->quantity = max(1, min(CartManager::MAX_QUANTITY_PER_ITEM, (int) $value));
+    }
+
+    public function addToCart(): void
+    {
+        $product = $this->product();
+        $selectedVariant = $this->selectedVariant($product);
+
+        if (! $selectedVariant instanceof ProductVariant) {
+            $this->addError('cart', __('Choose an available option before adding to cart.'));
+
+            return;
+        }
+
+        try {
+            app(CartManager::class)->add($selectedVariant, $this->quantity);
+            session()->flash('status', __('Added to cart.'));
+        } catch (ValidationException $exception) {
+            $this->addError('cart', $this->validationMessage($exception));
+        }
+    }
+
+    public function addToWishlist(): void
+    {
+        $product = $this->product();
+        $user = auth()->user();
+
+        if (! $user instanceof User) {
+            session()->put('url.intended', route('products.show', ['product' => $product->slug]));
+            $this->redirectRoute('login');
+
+            return;
+        }
+
+        try {
+            app(WishlistManager::class)->add($product, $this->selectedVariant($product), $user);
+            session()->flash('status', __('Saved to wishlist.'));
+        } catch (ValidationException $exception) {
+            $this->addError('wishlist', $this->validationMessage($exception));
+        }
     }
 
     public function render(ProductCatalog $catalog): View
@@ -175,5 +223,10 @@ class ProductShow extends Component
         }
 
         return $rows;
+    }
+
+    protected function validationMessage(ValidationException $exception): string
+    {
+        return $exception->validator->errors()->first() ?: __('The request could not be completed.');
     }
 }
