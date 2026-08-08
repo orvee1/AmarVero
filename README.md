@@ -177,6 +177,17 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Updated the custom admin layout with catalog navigation that is shown according to role permissions.
 - Added `AdminCatalogManagementTest` to verify catalog route protection, CRUD behavior, authorization boundaries, attribute values, product relationships, validation, and bulk status updates.
 
+## Phase 5 Log
+
+- Added Livewire admin catalog screens for product variants, product images, inventory, and size guides under `/admin/catalog/variants`, `/admin/catalog/images`, `/admin/catalog/inventory`, and `/admin/catalog/size-guides`.
+- Added manual variant CRUD with SKU generation, product-option validation, duplicate combination prevention, SKU-level pricing fields, dimensions, stock settings, active status, and attribute value assignment.
+- Added generated variant creation from each product's assigned active variant-option attribute values, with a safe limit and duplicate-combination skipping.
+- Added product image upload through the public storage disk, variant-specific images, primary-image enforcement, alt text, and image ordering.
+- Added audited inventory adjustment workflows, including bulk stock updates and `InventoryMovement` rows recorded through `App\Support\Inventory\AdjustVariantInventory`.
+- Added size-guide management with brand/category scoping, product assignment, active status, rich content, and normalized measurement rows.
+- Updated admin catalog navigation with Phase 5 modules guarded by existing granular permissions.
+- Added `AdminCatalogOperationsTest` to verify Phase 5 routes, variant generation, image upload and primary image behavior, inventory audit movements, size-guide assignment, and authorization boundaries.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

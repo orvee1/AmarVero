@@ -89,6 +89,30 @@
                                 {{ __('Products') }}
                             </x-admin.nav-link>
                         @endcan
+
+                        @can('product-variants.view')
+                            <x-admin.nav-link :href="route('admin.catalog.variants')" :active="request()->routeIs('admin.catalog.variants')">
+                                {{ __('Variants') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('product-images.view')
+                            <x-admin.nav-link :href="route('admin.catalog.images')" :active="request()->routeIs('admin.catalog.images')">
+                                {{ __('Images') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('inventory.view')
+                            <x-admin.nav-link :href="route('admin.catalog.inventory')" :active="request()->routeIs('admin.catalog.inventory')">
+                                {{ __('Inventory') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('size-guides.view')
+                            <x-admin.nav-link :href="route('admin.catalog.size-guides')" :active="request()->routeIs('admin.catalog.size-guides')">
+                                {{ __('Size guides') }}
+                            </x-admin.nav-link>
+                        @endcan
                     </div>
                 </div>
 

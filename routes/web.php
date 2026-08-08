@@ -6,7 +6,11 @@ use App\Livewire\Admin\Catalog\AttributeIndex;
 use App\Livewire\Admin\Catalog\BrandIndex;
 use App\Livewire\Admin\Catalog\CategoryIndex;
 use App\Livewire\Admin\Catalog\CollectionIndex;
+use App\Livewire\Admin\Catalog\ImageIndex;
+use App\Livewire\Admin\Catalog\InventoryIndex;
 use App\Livewire\Admin\Catalog\ProductIndex;
+use App\Livewire\Admin\Catalog\SizeGuideIndex;
+use App\Livewire\Admin\Catalog\VariantIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -26,6 +30,10 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::livewire('catalog/collections', CollectionIndex::class)->name('catalog.collections');
         Route::livewire('catalog/attributes', AttributeIndex::class)->name('catalog.attributes');
         Route::livewire('catalog/products', ProductIndex::class)->name('catalog.products');
+        Route::livewire('catalog/variants', VariantIndex::class)->name('catalog.variants');
+        Route::livewire('catalog/images', ImageIndex::class)->name('catalog.images');
+        Route::livewire('catalog/inventory', InventoryIndex::class)->name('catalog.inventory');
+        Route::livewire('catalog/size-guides', SizeGuideIndex::class)->name('catalog.size-guides');
     });
 
 require __DIR__.'/settings.php';
