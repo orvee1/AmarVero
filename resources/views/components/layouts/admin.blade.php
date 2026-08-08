@@ -117,6 +117,41 @@
                 </div>
 
                 <div>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Content') }}</p>
+                    <div class="mt-2 grid gap-1">
+                        @can('announcement-bars.view')
+                            <x-admin.nav-link :href="route('admin.content.announcements')" :active="request()->routeIs('admin.content.announcements')">
+                                {{ __('Announcements') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('navigation-menus.view')
+                            <x-admin.nav-link :href="route('admin.content.navigation')" :active="request()->routeIs('admin.content.navigation')">
+                                {{ __('Navigation') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('homepage-sections.view')
+                            <x-admin.nav-link :href="route('admin.content.homepage')" :active="request()->routeIs('admin.content.homepage')">
+                                {{ __('Homepage') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('pages.view')
+                            <x-admin.nav-link :href="route('admin.content.library')" :active="request()->routeIs('admin.content.library')">
+                                {{ __('Library') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('footer-sections.view')
+                            <x-admin.nav-link :href="route('admin.content.footer')" :active="request()->routeIs('admin.content.footer')">
+                                {{ __('Footer') }}
+                            </x-admin.nav-link>
+                        @endcan
+                    </div>
+                </div>
+
+                <div>
                     <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Account') }}</p>
                     <div class="mt-2 grid gap-1">
                         <x-admin.nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">

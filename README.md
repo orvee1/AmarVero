@@ -188,6 +188,16 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Updated admin catalog navigation with Phase 5 modules guarded by existing granular permissions.
 - Added `AdminCatalogOperationsTest` to verify Phase 5 routes, variant generation, image upload and primary image behavior, inventory audit movements, size-guide assignment, and authorization boundaries.
 
+## Phase 6 Log
+
+- Added admin content screens for announcement bars, navigation menus/items, homepage slides/sections/banners, CMS library records, footer sections/links, and social links under `/admin/content/*`.
+- Added reusable content-form helpers for scheduled content, slugs, nullable values, booleans, datetime inputs, ID lists, and key-value JSON content.
+- Replaced the static home route with `App\Http\Controllers\StorefrontController` and `App\Support\Storefront\StorefrontContent` for active scheduled storefront content.
+- Updated the storefront layout to render the active announcement bar, database-managed primary navigation, footer sections, and social links with safe fallbacks.
+- Updated the homepage to render published hero slides, promotional banners, homepage sections, service benefits, testimonials, and store locations from the database.
+- Added public CMS page rendering at `/pages/{slug}` for published static pages.
+- Added `PhaseSixContentTest` to verify admin authorization, CMS CRUD flows, scheduled storefront rendering, dynamic navigation/footer output, and public page visibility.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

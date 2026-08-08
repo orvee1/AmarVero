@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Support\AdminPermissions;
+use App\Support\Storefront\StorefrontContent;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->configureViewComposers();
     }
 
     /**
@@ -64,5 +67,20 @@ class AppServiceProvider extends ServiceProvider
         Gate::guessPolicyNamesUsing(
             fn (string $modelClass): string => str_replace('\\Models\\', '\\Policies\\', $modelClass).'Policy',
         );
+    }
+
+    protected function configureViewComposers(): void
+    {
+        View::composer('components.layouts.storefront', function ($view): void {
+            $content = app(StorefrontContent::class);
+
+            $view->with([
+                'storefrontAnnouncement' => $content->announcementBar(),
+                'storefrontNavigation' => $content->navigationMenu(),
+                'storefrontFooterSections' => $content->footerSections(),
+                'storefrontSocialLinks' => $content->socialLinks(),
+                'storefrontContent' => $content,
+            ]);
+        });
     }
 }
