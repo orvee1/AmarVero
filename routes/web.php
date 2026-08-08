@@ -6,6 +6,10 @@ use App\Http\Controllers\Storefront\CartItemController;
 use App\Http\Controllers\Storefront\OrderConfirmationController;
 use App\Http\Controllers\Storefront\WishlistItemController;
 use App\Http\Controllers\StorefrontController;
+use App\Livewire\Account\AddressBook;
+use App\Livewire\Account\OrderDetail;
+use App\Livewire\Account\OrderHistory;
+use App\Livewire\Account\ReviewManager;
 use App\Livewire\Admin\Catalog\AttributeIndex;
 use App\Livewire\Admin\Catalog\BrandIndex;
 use App\Livewire\Admin\Catalog\CategoryIndex;
@@ -52,6 +56,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::livewire('account/addresses', AddressBook::class)->name('account.addresses');
+    Route::livewire('account/orders', OrderHistory::class)->name('account.orders');
+    Route::livewire('account/orders/{order:order_number}', OrderDetail::class)->name('account.orders.show');
+    Route::livewire('account/reviews', ReviewManager::class)->name('account.reviews');
 });
 
 Route::middleware(['auth', 'verified', 'admin'])

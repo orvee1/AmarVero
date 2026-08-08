@@ -19,6 +19,15 @@
         </div>
         <flux:menu.separator />
         <flux:menu.radio.group>
+            <flux:menu.item :href="route('account.orders')" icon="shopping-bag" wire:navigate>
+                {{ __('Orders') }}
+            </flux:menu.item>
+            <flux:menu.item :href="route('account.addresses')" icon="map-pin" wire:navigate>
+                {{ __('Addresses') }}
+            </flux:menu.item>
+            <flux:menu.item :href="route('account.reviews')" icon="star" wire:navigate>
+                {{ __('Reviews') }}
+            </flux:menu.item>
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Settings') }}
             </flux:menu.item>

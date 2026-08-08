@@ -228,6 +228,16 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Made coupon pivot relationships explicit so model relationships match the existing `coupon_*` table names.
 - Added `PhaseNineCheckoutTest` to verify coupon application, shipping/payment/order creation, inventory deduction, cart conversion, invalid coupon rejection, stale stock blocking, and guest confirmation access.
 
+## Phase 10 Log
+
+- Added authenticated customer account routes for address book, order history, order details, and product reviews under `/account/*`.
+- Added `App\Livewire\Account\AddressBook` with customer-owned address CRUD, billing/shipping address types, and single-default shipping/billing enforcement.
+- Added `App\Livewire\Account\OrderHistory` and `App\Livewire\Account\OrderDetail` for customer-scoped order browsing, status filtering, item snapshots, payment summaries, shipping snapshots, and order timeline visibility.
+- Added `App\Livewire\Account\ReviewManager` so customers can submit, edit, and delete verified-purchase reviews for products from their own orders, with submissions reset to pending moderation.
+- Updated the signed-in account dashboard with recent orders, default shipping address, pending-review visibility, and shortcuts into orders, addresses, reviews, and settings.
+- Replaced starter account navigation links with customer account, wishlist, shop, and settings links across sidebar, header, mobile, and user-menu layouts.
+- Added `PhaseTenCustomerAccountTest` to verify route protection, order ownership, address defaults, verified-purchase review workflows, and cross-account review blocking.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

@@ -13,31 +13,25 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
+                <flux:navbar.item icon="shopping-bag" :href="route('account.orders')" :current="request()->routeIs('account.orders*')" wire:navigate>
+                    {{ __('Orders') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="map-pin" :href="route('account.addresses')" :current="request()->routeIs('account.addresses')" wire:navigate>
+                    {{ __('Addresses') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="star" :href="route('account.reviews')" :current="request()->routeIs('account.reviews')" wire:navigate>
+                    {{ __('Reviews') }}
+                </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
 
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:tooltip :content="__('Search')" position="bottom">
-                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
+                <flux:tooltip :content="__('Shop')" position="bottom">
+                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="shopping-bag" :href="route('shop')" :label="__('Shop')" />
                 </flux:tooltip>
-                <flux:tooltip :content="__('Repository')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="folder-git-2"
-                        href="https://github.com/laravel/livewire-starter-kit"
-                        target="_blank"
-                        :label="__('Repository')"
-                    />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Documentation')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="book-open-text"
-                        href="https://laravel.com/docs/starter-kits#livewire"
-                        target="_blank"
-                        :label="__('Documentation')"
-                    />
+                <flux:tooltip :content="__('Wishlist')" position="bottom">
+                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="heart" :href="route('wishlist')" :label="__('Wishlist')" />
                 </flux:tooltip>
             </flux:navbar>
 
@@ -52,9 +46,21 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')">
+                <flux:sidebar.group :heading="__('Account')">
                     <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard')  }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="shopping-bag" :href="route('account.orders')" :current="request()->routeIs('account.orders*')" wire:navigate>
+                        {{ __('Orders') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="map-pin" :href="route('account.addresses')" :current="request()->routeIs('account.addresses')" wire:navigate>
+                        {{ __('Addresses') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="star" :href="route('account.reviews')" :current="request()->routeIs('account.reviews')" wire:navigate>
+                        {{ __('Reviews') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="heart" :href="route('wishlist')" :current="request()->routeIs('wishlist')" wire:navigate>
+                        {{ __('Wishlist') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
@@ -62,11 +68,11 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
+                <flux:sidebar.item icon="shopping-bag" :href="route('shop')">
+                    {{ __('Shop') }}
                 </flux:sidebar.item>
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
+                <flux:sidebar.item icon="cog" :href="route('profile.edit')" wire:navigate>
+                    {{ __('Settings') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
         </flux:sidebar>

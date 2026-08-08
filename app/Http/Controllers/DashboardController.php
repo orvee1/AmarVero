@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReviewStatus;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -47,6 +48,19 @@ class DashboardController extends Controller
                 ->latest('placed_at')
                 ->latest('id')
                 ->first(),
+            'recentOrders' => $user->orders()
+                ->with(['items', 'shippingMethod'])
+                ->latest('placed_at')
+                ->latest('id')
+                ->limit(3)
+                ->get(),
+            'defaultShippingAddress' => $user->addresses()
+                ->where('is_default_shipping', true)
+                ->latest()
+                ->first(),
+            'pendingReviewCount' => $user->productReviews()
+                ->where('status', ReviewStatus::Pending)
+                ->count(),
         ]);
     }
 }

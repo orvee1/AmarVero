@@ -11,9 +11,21 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
+                <flux:sidebar.group :heading="__('Account')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="shopping-bag" :href="route('account.orders')" :current="request()->routeIs('account.orders*')" wire:navigate>
+                        {{ __('Orders') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="map-pin" :href="route('account.addresses')" :current="request()->routeIs('account.addresses')" wire:navigate>
+                        {{ __('Addresses') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="star" :href="route('account.reviews')" :current="request()->routeIs('account.reviews')" wire:navigate>
+                        {{ __('Reviews') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="heart" :href="route('wishlist')" :current="request()->routeIs('wishlist')" wire:navigate>
+                        {{ __('Wishlist') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
@@ -21,12 +33,12 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
+                <flux:sidebar.item icon="shopping-bag" :href="route('shop')">
+                    {{ __('Shop') }}
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
+                <flux:sidebar.item icon="cog" :href="route('profile.edit')" wire:navigate>
+                    {{ __('Settings') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
@@ -65,6 +77,15 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
+                        <flux:menu.item :href="route('account.orders')" icon="shopping-bag" wire:navigate>
+                            {{ __('Orders') }}
+                        </flux:menu.item>
+                        <flux:menu.item :href="route('account.addresses')" icon="map-pin" wire:navigate>
+                            {{ __('Addresses') }}
+                        </flux:menu.item>
+                        <flux:menu.item :href="route('account.reviews')" icon="star" wire:navigate>
+                            {{ __('Reviews') }}
+                        </flux:menu.item>
                         <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                             {{ __('Settings') }}
                         </flux:menu.item>
