@@ -46,7 +46,7 @@ class Coupon extends Model
      */
     public function brands(): BelongsToMany
     {
-        return $this->belongsToMany(Brand::class);
+        return $this->belongsToMany(Brand::class, 'coupon_brand');
     }
 
     /**
@@ -54,7 +54,7 @@ class Coupon extends Model
      */
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'coupon_category');
     }
 
     /**
@@ -62,7 +62,7 @@ class Coupon extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'coupon_product');
     }
 
     /**
@@ -70,7 +70,7 @@ class Coupon extends Model
      */
     public function eligibleUsers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'coupon_user');
     }
 
     /**

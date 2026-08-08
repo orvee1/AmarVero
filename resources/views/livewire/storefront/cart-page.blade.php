@@ -119,7 +119,8 @@
 
                     <p class="mt-4 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ __('Shipping, discounts, and payment are calculated after checkout information is entered.') }}</p>
 
-                    <div class="mt-6">
+                    <div class="mt-6 grid gap-3">
+                        <x-ui.button :href="route('checkout')" class="w-full">{{ __('Checkout') }}</x-ui.button>
                         <x-ui.button :href="route('shop')" variant="secondary" class="w-full">{{ __('Continue shopping') }}</x-ui.button>
                     </div>
                 </aside>

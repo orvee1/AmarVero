@@ -218,6 +218,16 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Updated storefront navigation with real cart and wishlist counts.
 - Added `PhaseEightCartWishlistTest` to verify guest cart writes, server-side pricing/stock validation, cart quantity updates, wishlist save/remove/move behavior, protected wishlist access, and guest cart merging on login.
 
+## Phase 9 Log
+
+- Added `App\Support\Checkout\CouponValidator` for active-window checks, minimum order validation, usage limits, first-order/customer eligibility, scoped coupon restrictions, fixed/percentage discounts, and free-shipping coupon support.
+- Added `App\Support\Checkout\ShippingRateResolver` for active zone/method matching by country and region, free-shipping thresholds, and coupon-driven shipping discounts.
+- Added `App\Support\Checkout\CheckoutManager` to recalculate checkout totals server-side, refresh line prices, lock stock-sensitive variants, create order/address/item/payment snapshots, record status and payment events, redeem coupons, write sale inventory movements, and convert carts atomically.
+- Added public checkout and session-scoped order confirmation routes with a responsive Livewire checkout page for contact, delivery, shipping, payment, coupon, order note, and summary workflows.
+- Updated the cart summary with a checkout call to action.
+- Made coupon pivot relationships explicit so model relationships match the existing `coupon_*` table names.
+- Added `PhaseNineCheckoutTest` to verify coupon application, shipping/payment/order creation, inventory deduction, cart conversion, invalid coupon rejection, stale stock blocking, and guest confirmation access.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

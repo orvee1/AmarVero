@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Storefront\CartItemController;
+use App\Http\Controllers\Storefront\OrderConfirmationController;
 use App\Http\Controllers\Storefront\WishlistItemController;
 use App\Http\Controllers\StorefrontController;
 use App\Livewire\Admin\Catalog\AttributeIndex;
@@ -20,6 +21,7 @@ use App\Livewire\Admin\Content\FooterContentIndex;
 use App\Livewire\Admin\Content\HomepageContentIndex;
 use App\Livewire\Admin\Content\NavigationMenuIndex;
 use App\Livewire\Storefront\CartPage;
+use App\Livewire\Storefront\CheckoutPage;
 use App\Livewire\Storefront\ProductListing;
 use App\Livewire\Storefront\ProductShow;
 use App\Livewire\Storefront\WishlistPage;
@@ -40,6 +42,8 @@ Route::livewire('collections/{slug}', ProductListing::class)->name('collections.
 Route::livewire('products/{product:slug}', ProductShow::class)->name('products.show');
 Route::livewire('cart', CartPage::class)->name('cart');
 Route::post('cart/items', [CartItemController::class, 'store'])->name('cart.items.store');
+Route::livewire('checkout', CheckoutPage::class)->name('checkout');
+Route::get('orders/{order:order_number}/thank-you', OrderConfirmationController::class)->name('checkout.thank-you');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('wishlist', WishlistPage::class)->name('wishlist');
