@@ -198,6 +198,15 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added public CMS page rendering at `/pages/{slug}` for published static pages.
 - Added `PhaseSixContentTest` to verify admin authorization, CMS CRUD flows, scheduled storefront rendering, dynamic navigation/footer output, and public page visibility.
 
+## Phase 7 Log
+
+- Added `App\Support\Storefront\ProductCatalog` for optimized published product queries, active sale pricing, searchable filters, stock labels, media URLs, variant payloads, review summaries, and related product discovery.
+- Added public Livewire listing routes for `/shop`, `/search`, `/sale`, `/featured`, `/new-arrivals`, `/best-sellers`, gender pages, category pages, brand pages, and collection pages.
+- Added the responsive product listing experience with debounced search, sorting, pagination, mobile and desktop filters, active filter chips, grid/list views, sale badges, color swatches, and stock labels.
+- Added public product detail pages at `/products/{slug}` with gallery media, variant option selection, selected SKU/stock/price state, product details, care notes, size guides, approved reviews, rating distribution, and related products.
+- Updated storefront navigation fallbacks and CMS link generation so category and collection menu items resolve through named storefront routes.
+- Added `PhaseSevenStorefrontTest` to verify public catalog route contexts, Livewire search/filter behavior, published visibility, active sale windows, variant selection, size guides, reviews, related products, and draft product 404 behavior.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

@@ -17,10 +17,23 @@ use App\Livewire\Admin\Content\ContentLibraryIndex;
 use App\Livewire\Admin\Content\FooterContentIndex;
 use App\Livewire\Admin\Content\HomepageContentIndex;
 use App\Livewire\Admin\Content\NavigationMenuIndex;
+use App\Livewire\Storefront\ProductListing;
+use App\Livewire\Storefront\ProductShow;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', StorefrontController::class)->name('home');
 Route::get('pages/{page:slug}', [StorefrontController::class, 'page'])->name('pages.show');
+Route::livewire('shop', ProductListing::class)->name('shop');
+Route::livewire('search', ProductListing::class)->name('search');
+Route::livewire('sale', ProductListing::class)->name('sale');
+Route::livewire('featured', ProductListing::class)->name('featured');
+Route::livewire('new-arrivals', ProductListing::class)->name('new-arrivals');
+Route::livewire('best-sellers', ProductListing::class)->name('best-sellers');
+Route::livewire('gender/{slug}', ProductListing::class)->name('gender.show');
+Route::livewire('categories/{slug}', ProductListing::class)->name('categories.show');
+Route::livewire('brands/{slug}', ProductListing::class)->name('brands.show');
+Route::livewire('collections/{slug}', ProductListing::class)->name('collections.show');
+Route::livewire('products/{product:slug}', ProductShow::class)->name('products.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

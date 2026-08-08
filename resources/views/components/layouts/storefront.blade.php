@@ -54,6 +54,8 @@
                         @endforeach
                     @else
                         <x-ui.button variant="subtle" :href="route('home')">{{ __('Home') }}</x-ui.button>
+                        <x-ui.button variant="subtle" :href="route('shop')">{{ __('Shop') }}</x-ui.button>
+                        <x-ui.button variant="subtle" :href="route('sale')">{{ __('Sale') }}</x-ui.button>
                     @endif
 
                     @auth
@@ -99,6 +101,8 @@
                             @endforeach
                         @else
                             <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('home') }}">{{ __('Home') }}</a>
+                            <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('shop') }}">{{ __('Shop') }}</a>
+                            <a class="rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-white/10" href="{{ route('sale') }}">{{ __('Sale') }}</a>
                         @endif
 
                         @auth
@@ -156,6 +160,8 @@
                 @else
                     <nav class="flex flex-wrap gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300" aria-label="{{ __('Footer navigation') }}">
                         <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('home') }}">{{ __('Home') }}</a>
+                        <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('shop') }}">{{ __('Shop') }}</a>
+                        <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('sale') }}">{{ __('Sale') }}</a>
 
                         @auth
                             <a class="rounded-md px-2 py-1 hover:text-zinc-950 dark:hover:text-white" href="{{ route('dashboard') }}">{{ __('My account') }}</a>

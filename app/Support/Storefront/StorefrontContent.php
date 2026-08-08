@@ -127,11 +127,11 @@ class StorefrontContent
         }
 
         if ($linkable instanceof Category) {
-            return url('/categories/'.$linkable->slug);
+            return route('categories.show', ['slug' => $linkable->slug]);
         }
 
         if ($linkable instanceof ProductCollection) {
-            return url('/collections/'.$linkable->slug);
+            return route('collections.show', ['slug' => $linkable->slug]);
         }
 
         return '#';

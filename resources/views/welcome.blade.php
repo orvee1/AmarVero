@@ -46,14 +46,16 @@
                     </p>
 
                     <div class="mt-8 flex flex-wrap gap-3">
+                        <x-ui.button :href="route('shop')" size="lg">{{ __('Shop footwear') }}</x-ui.button>
+
                         @auth
-                            <x-ui.button :href="route('dashboard')" size="lg">{{ __('Open my account') }}</x-ui.button>
+                            <x-ui.button :href="route('dashboard')" variant="secondary" size="lg">{{ __('Open my account') }}</x-ui.button>
                         @else
                             @if (Route::has('register'))
-                                <x-ui.button :href="route('register')" size="lg">{{ __('Create account') }}</x-ui.button>
+                                <x-ui.button :href="route('register')" variant="secondary" size="lg">{{ __('Create account') }}</x-ui.button>
                             @endif
 
-                            <x-ui.button :href="route('login')" variant="secondary" size="lg">{{ __('Sign in') }}</x-ui.button>
+                            <x-ui.button :href="route('login')" variant="subtle" size="lg">{{ __('Sign in') }}</x-ui.button>
                         @endauth
                     </div>
                 </div>
