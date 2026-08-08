@@ -39,11 +39,17 @@ class Product extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Brand, $this>
+     */
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
     }
 
+    /**
+     * @return BelongsToMany<Category, $this>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class)
@@ -51,6 +57,9 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<ProductCollection, $this>
+     */
     public function collections(): BelongsToMany
     {
         return $this->belongsToMany(ProductCollection::class, 'product_collection_product')
@@ -58,32 +67,51 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<AttributeValue, $this>
+     */
     public function attributeValues(): BelongsToMany
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_value')
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<SizeGuide, $this>
+     */
     public function sizeGuides(): BelongsToMany
     {
         return $this->belongsToMany(SizeGuide::class)->withTimestamps();
     }
 
+    /**
+     * @return HasMany<ProductVariant, $this>
+     */
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
     }
 
+    /**
+     * @return HasMany<ProductImage, $this>
+     */
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
+    /**
+     * @return HasMany<ProductReview, $this>
+     */
     public function reviews(): HasMany
     {
         return $this->hasMany(ProductReview::class);
     }
 
+    /**
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query

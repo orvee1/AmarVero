@@ -27,16 +27,25 @@ class Category extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<self, $this>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    /**
+     * @return HasMany<self, $this>
+     */
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    /**
+     * @return BelongsToMany<Product, $this>
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)
@@ -44,6 +53,9 @@ class Category extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @return HasMany<SizeGuide, $this>
+     */
     public function sizeGuides(): HasMany
     {
         return $this->hasMany(SizeGuide::class);

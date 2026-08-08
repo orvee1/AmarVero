@@ -25,6 +25,9 @@ class ShippingZone extends Model
         ];
     }
 
+    /**
+     * @return HasMany<ShippingMethod, $this>
+     */
     public function methods(): HasMany
     {
         return $this->hasMany(ShippingMethod::class);

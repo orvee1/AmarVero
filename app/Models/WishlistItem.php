@@ -12,16 +12,25 @@ class WishlistItem extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * @return BelongsTo<Wishlist, $this>
+     */
     public function wishlist(): BelongsTo
     {
         return $this->belongsTo(Wishlist::class);
     }
 
+    /**
+     * @return BelongsTo<Product, $this>
+     */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
+    /**
+     * @return BelongsTo<ProductVariant, $this>
+     */
     public function productVariant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class);

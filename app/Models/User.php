@@ -62,26 +62,41 @@ class User extends Authenticatable implements PasskeyUser
             : $initials;
     }
 
+    /**
+     * @return HasMany<CustomerAddress, $this>
+     */
     public function addresses(): HasMany
     {
         return $this->hasMany(CustomerAddress::class);
     }
 
+    /**
+     * @return HasMany<Cart, $this>
+     */
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }
 
+    /**
+     * @return HasMany<Wishlist, $this>
+     */
     public function wishlists(): HasMany
     {
         return $this->hasMany(Wishlist::class);
     }
 
+    /**
+     * @return HasMany<Order, $this>
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * @return HasMany<ProductReview, $this>
+     */
     public function productReviews(): HasMany
     {
         return $this->hasMany(ProductReview::class);

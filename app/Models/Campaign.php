@@ -26,11 +26,17 @@ class Campaign extends Model
         ];
     }
 
+    /**
+     * @return HasMany<Coupon, $this>
+     */
     public function coupons(): HasMany
     {
         return $this->hasMany(Coupon::class);
     }
 
+    /**
+     * @return HasMany<PromotionalBanner, $this>
+     */
     public function promotionalBanners(): HasMany
     {
         return $this->hasMany(PromotionalBanner::class);

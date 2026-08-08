@@ -22,6 +22,9 @@ class NavigationMenu extends Model
         ];
     }
 
+    /**
+     * @return HasMany<NavigationMenuItem, $this>
+     */
     public function items(): HasMany
     {
         return $this->hasMany(NavigationMenuItem::class);

@@ -23,6 +23,9 @@ class FooterSection extends Model
         ];
     }
 
+    /**
+     * @return HasMany<FooterLink, $this>
+     */
     public function links(): HasMany
     {
         return $this->hasMany(FooterLink::class);

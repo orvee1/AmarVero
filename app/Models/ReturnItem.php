@@ -22,11 +22,17 @@ class ReturnItem extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<ReturnRequest, $this>
+     */
     public function returnRequest(): BelongsTo
     {
         return $this->belongsTo(ReturnRequest::class);
     }
 
+    /**
+     * @return BelongsTo<OrderItem, $this>
+     */
     public function orderItem(): BelongsTo
     {
         return $this->belongsTo(OrderItem::class);

@@ -29,56 +29,89 @@ class Order extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<Coupon, $this>
+     */
     public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
     }
 
+    /**
+     * @return BelongsTo<ShippingMethod, $this>
+     */
     public function shippingMethod(): BelongsTo
     {
         return $this->belongsTo(ShippingMethod::class);
     }
 
+    /**
+     * @return HasMany<OrderAddress, $this>
+     */
     public function addresses(): HasMany
     {
         return $this->hasMany(OrderAddress::class);
     }
 
+    /**
+     * @return HasMany<OrderItem, $this>
+     */
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
+    /**
+     * @return HasMany<Payment, $this>
+     */
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
 
+    /**
+     * @return HasMany<OrderStatusEvent, $this>
+     */
     public function statusEvents(): HasMany
     {
         return $this->hasMany(OrderStatusEvent::class);
     }
 
+    /**
+     * @return HasMany<OrderNote, $this>
+     */
     public function notes(): HasMany
     {
         return $this->hasMany(OrderNote::class);
     }
 
+    /**
+     * @return HasMany<Shipment, $this>
+     */
     public function shipments(): HasMany
     {
         return $this->hasMany(Shipment::class);
     }
 
+    /**
+     * @return HasMany<ReturnRequest, $this>
+     */
     public function returnRequests(): HasMany
     {
         return $this->hasMany(ReturnRequest::class);
     }
 
+    /**
+     * @return HasMany<Refund, $this>
+     */
     public function refunds(): HasMany
     {
         return $this->hasMany(Refund::class);

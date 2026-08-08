@@ -33,36 +33,57 @@ class Coupon extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Campaign, $this>
+     */
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);
     }
 
+    /**
+     * @return BelongsToMany<Brand, $this>
+     */
     public function brands(): BelongsToMany
     {
         return $this->belongsToMany(Brand::class);
     }
 
+    /**
+     * @return BelongsToMany<Category, $this>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
+    /**
+     * @return BelongsToMany<Product, $this>
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
     }
 
+    /**
+     * @return BelongsToMany<User, $this>
+     */
     public function eligibleUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * @return HasMany<CouponRedemption, $this>
+     */
     public function redemptions(): HasMany
     {
         return $this->hasMany(CouponRedemption::class);
     }
 
+    /**
+     * @return HasMany<Order, $this>
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

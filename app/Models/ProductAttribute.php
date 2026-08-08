@@ -25,6 +25,9 @@ class ProductAttribute extends Model
         ];
     }
 
+    /**
+     * @return HasMany<AttributeValue, $this>
+     */
     public function values(): HasMany
     {
         return $this->hasMany(AttributeValue::class);

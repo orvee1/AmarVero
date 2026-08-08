@@ -25,11 +25,17 @@ class ShippingMethod extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<ShippingZone, $this>
+     */
     public function shippingZone(): BelongsTo
     {
         return $this->belongsTo(ShippingZone::class);
     }
 
+    /**
+     * @return HasMany<Order, $this>
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

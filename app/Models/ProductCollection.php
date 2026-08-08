@@ -27,6 +27,9 @@ class ProductCollection extends Model
         ];
     }
 
+    /**
+     * @return BelongsToMany<Product, $this>
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'product_collection_product')

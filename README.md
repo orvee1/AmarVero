@@ -157,6 +157,26 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added model policies for the Phase 1 catalog, customer, cart, wishlist, coupon, order, payment, return, refund, review, content, shipping, settings, footer, and social-link models.
 - Added `AdminAuthorizationTest` to verify admin middleware access, role boundaries, policy decisions, and Super Admin override behavior.
 
+## Phase 3 Log
+
+- Added reusable Blade design-system components for brand lockups, containers, buttons, badges, section headings, empty states, statistic cards, and admin navigation links.
+- Replaced the starter welcome page with an original responsive storefront shell and a generated unbranded footwear hero image stored at `public/images/storefront/hero-footwear.png`.
+- Replaced the starter authenticated dashboard placeholders with real account metrics backed by the signed-in user's related orders, addresses, wishlists, and reviews.
+- Added a custom authorized admin layout with responsive navigation, account controls, breadcrumbs, skip links, and an `/admin` overview route.
+- Added `App\Http\Controllers\Admin\DashboardController` to render real database counts for products, published products, orders, paid revenue, customers, low-stock variants, catalog foundations, and recent orders.
+- Added `PhaseThreeLayoutTest` to verify the storefront shell, customer dashboard, and protected admin overview behavior.
+
+## Phase 4 Log
+
+- Added class-based Livewire admin catalog components for brand, category, collection, attribute/value, and product management under `App\Livewire\Admin\Catalog`.
+- Added searchable, filterable, paginated admin catalog screens under `/admin/catalog/brands`, `/admin/catalog/categories`, `/admin/catalog/collections`, `/admin/catalog/attributes`, and `/admin/catalog/products`.
+- Added policy-protected create, update, and delete actions for brands, nested categories, scheduled collections, attributes, scoped attribute values, and products.
+- Added product editing for publication status, scheduled publishing, pricing, sale windows, merchandising flags, SEO fields, brand assignment, categories, collections, and attribute values.
+- Added safe bulk product status updates for draft, published, and archived product states.
+- Added shared catalog form normalization helpers for slugs, nullable fields, booleans, IDs, decimals, and datetime-local inputs.
+- Updated the custom admin layout with catalog navigation that is shown according to role permissions.
+- Added `AdminCatalogManagementTest` to verify catalog route protection, CRUD behavior, authorization boundaries, attribute values, product relationships, validation, and bulk status updates.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

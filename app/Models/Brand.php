@@ -25,11 +25,17 @@ class Brand extends Model
         ];
     }
 
+    /**
+     * @return HasMany<Product, $this>
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * @return HasMany<SizeGuide, $this>
+     */
     public function sizeGuides(): HasMany
     {
         return $this->hasMany(SizeGuide::class);

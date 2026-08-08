@@ -24,6 +24,9 @@ class FooterLink extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<FooterSection, $this>
+     */
     public function footerSection(): BelongsTo
     {
         return $this->belongsTo(FooterSection::class);
