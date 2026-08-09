@@ -1,6 +1,6 @@
 # Amarvero
 
-Amarvero is a Laravel 13 footwear e-commerce application built on the official Livewire starter kit. Phase 0 has prepared the project for production e-commerce work by validating the runtime, moving the app and tests to MySQL, installing the required role/permission and slider dependencies, and confirming the starter authentication, Livewire, Tailwind CSS 4, Vite, tests, and build pipeline work.
+Amarvero is a Laravel 13 footwear e-commerce application built on the official Livewire starter kit. It now includes the production-oriented domain schema, storefront, cart, checkout, customer account, admin operations, marketing, settings, SEO, and demo seeding foundation needed for a complete footwear commerce project.
 
 ## Requirements
 
@@ -27,6 +27,7 @@ npm install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan storage:link
 ```
 
@@ -47,13 +48,15 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Demo admin creation in later phases must read from:
+Demo admin creation reads from:
 
 ```dotenv
 ADMIN_NAME=
 ADMIN_EMAIL=
 ADMIN_PASSWORD=
 ```
+
+For local and test environments, blank admin credentials seed `admin@example.test` with password `password`. Production seeding requires `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
 
 Do not store payment, shipping, mail, analytics, or other provider secrets in admin-editable settings. Keep secrets in environment variables or secure deployment configuration.
 
@@ -88,6 +91,7 @@ php artisan route:list
 php artisan migrate:status
 php artisan test --compact
 vendor\bin\pint --format agent
+npm run build
 ```
 
 ## Architecture
@@ -260,6 +264,15 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Cached defined site settings and invalidated that cache on settings saves to reduce repeated SEO/settings queries.
 - Added async image decoding and breadcrumb `aria-current` refinements to key storefront templates.
 - Added `PhaseTwelveSeoTest` to verify metadata, structured data, listing robots behavior, sitemap XML, and robots.txt.
+
+## Phase 13 Log
+
+- Added `AdminUserSeeder` for environment-backed Super Admin creation with local/testing fallback credentials and a production guard.
+- Added `EcommerceDemoSeeder` with idempotent demo settings, brands, categories, collections, attributes, size guide, products, variants, images, inventory movements, shipping, campaign/coupon/newsletter records, CMS content, customer account data, cart, wishlist, order, payment, shipment, return, refund, coupon redemption, and review records.
+- Updated `DatabaseSeeder` to seed roles/permissions, the admin user, and the complete demo e-commerce dataset.
+- Added factories for brands, categories, products, product variants, and orders, plus `HasFactory` support on those models.
+- Added `PhaseThirteenSeedersTest` to verify factory persistence, seeded admin credentials/roles, idempotent dataset counts, order-operation records, and seeded storefront/sitemap visibility.
+- Documented local seeding expectations and final QA commands.
 
 ## Deployment Notes
 
