@@ -24,6 +24,10 @@ use App\Livewire\Admin\Content\ContentLibraryIndex;
 use App\Livewire\Admin\Content\FooterContentIndex;
 use App\Livewire\Admin\Content\HomepageContentIndex;
 use App\Livewire\Admin\Content\NavigationMenuIndex;
+use App\Livewire\Admin\Marketing\MarketingIndex;
+use App\Livewire\Admin\Operations\CustomerIndex;
+use App\Livewire\Admin\Operations\OrderIndex;
+use App\Livewire\Admin\Settings\StoreSettingsIndex;
 use App\Livewire\Storefront\CartPage;
 use App\Livewire\Storefront\CheckoutPage;
 use App\Livewire\Storefront\ProductListing;
@@ -78,11 +82,18 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::livewire('catalog/inventory', InventoryIndex::class)->name('catalog.inventory');
         Route::livewire('catalog/size-guides', SizeGuideIndex::class)->name('catalog.size-guides');
 
+        Route::livewire('operations/orders', OrderIndex::class)->name('operations.orders');
+        Route::livewire('operations/customers', CustomerIndex::class)->name('operations.customers');
+
+        Route::livewire('marketing', MarketingIndex::class)->name('marketing');
+
         Route::livewire('content/announcements', AnnouncementBarIndex::class)->name('content.announcements');
         Route::livewire('content/navigation', NavigationMenuIndex::class)->name('content.navigation');
         Route::livewire('content/homepage', HomepageContentIndex::class)->name('content.homepage');
         Route::livewire('content/library', ContentLibraryIndex::class)->name('content.library');
         Route::livewire('content/footer', FooterContentIndex::class)->name('content.footer');
+
+        Route::livewire('settings/store', StoreSettingsIndex::class)->name('settings.store');
     });
 
 require __DIR__.'/settings.php';

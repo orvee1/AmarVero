@@ -117,6 +117,34 @@
                 </div>
 
                 <div>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Operations') }}</p>
+                    <div class="mt-2 grid gap-1">
+                        @can('orders.view')
+                            <x-admin.nav-link :href="route('admin.operations.orders')" :active="request()->routeIs('admin.operations.orders')">
+                                {{ __('Orders') }}
+                            </x-admin.nav-link>
+                        @endcan
+
+                        @can('customers.view')
+                            <x-admin.nav-link :href="route('admin.operations.customers')" :active="request()->routeIs('admin.operations.customers')">
+                                {{ __('Customers') }}
+                            </x-admin.nav-link>
+                        @endcan
+                    </div>
+                </div>
+
+                <div>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Marketing') }}</p>
+                    <div class="mt-2 grid gap-1">
+                        @if (auth()->user()->can('campaigns.view') || auth()->user()->can('coupons.view') || auth()->user()->can('newsletter.view'))
+                            <x-admin.nav-link :href="route('admin.marketing')" :active="request()->routeIs('admin.marketing')">
+                                {{ __('Campaigns and coupons') }}
+                            </x-admin.nav-link>
+                        @endif
+                    </div>
+                </div>
+
+                <div>
                     <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Content') }}</p>
                     <div class="mt-2 grid gap-1">
                         @can('announcement-bars.view')
@@ -148,6 +176,17 @@
                                 {{ __('Footer') }}
                             </x-admin.nav-link>
                         @endcan
+                    </div>
+                </div>
+
+                <div>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Settings') }}</p>
+                    <div class="mt-2 grid gap-1">
+                        @if (auth()->user()->can('settings.view') || auth()->user()->can('shipping-settings.view'))
+                            <x-admin.nav-link :href="route('admin.settings.store')" :active="request()->routeIs('admin.settings.store')">
+                                {{ __('Store settings') }}
+                            </x-admin.nav-link>
+                        @endif
                     </div>
                 </div>
 

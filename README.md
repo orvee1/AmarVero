@@ -238,6 +238,18 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Replaced starter account navigation links with customer account, wishlist, shop, and settings links across sidebar, header, mobile, and user-menu layouts.
 - Added `PhaseTenCustomerAccountTest` to verify route protection, order ownership, address defaults, verified-purchase review workflows, and cross-account review blocking.
 
+## Phase 11 Log
+
+- Added admin operations routes for orders and customers under `/admin/operations/*`.
+- Added `App\Livewire\Admin\Operations\OrderIndex` with order search, fulfillment/payment filters, status updates, payment updates, support notes, item review, and audit timeline visibility.
+- Added `App\Support\Admin\AdminOrderManager` to centralize admin order status events, payment events, and order notes.
+- Added `App\Livewire\Admin\Operations\CustomerIndex` for roleless customer search, profile updates, order summaries, address review, review counts, and wishlist activity.
+- Added admin marketing under `/admin/marketing` for campaigns, coupons, coupon usage, newsletter subscriber moderation, and featured product merchandising.
+- Added `App\Support\Settings\SettingsManager` and `/admin/settings/store` for brand, contact, SEO, analytics placeholder, maintenance, newsletter, invoice, order-rule, review, and non-secret payment setting persistence.
+- Added shipping zone and shipping method management to the settings screen for checkout delivery configuration.
+- Updated the admin layout with permission-aware Operations, Marketing, and Settings navigation.
+- Added `PhaseElevenAdminOperationsTest` to verify Phase 11 routes, order audit writes, customer profile edits, marketing workflows, settings persistence, and shipping-rate setup.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.
