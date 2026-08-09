@@ -283,6 +283,13 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added `DashboardOverviewRequest` authorization and validation for dashboard filters.
 - Added `PhaseFourteenDashboardTest` to verify dashboard analytics rendering and custom date validation.
 
+## Phase 15 Log
+
+- Hardened the custom admin shell with Escape-to-close mobile navigation, focus restoration, explicit menu state attributes, body scroll locking while the drawer is open, and a permission-aware quick navigation search.
+- Added the reusable `x-admin.table-region` Blade component for focusable, accessible horizontally scrollable admin tables with mobile scroll hints.
+- Applied accessible table regions to the product and order admin tables, plus the admin dashboard recent-orders table.
+- Added `PhaseFifteenAdminUxTest` to verify the admin shell navigation affordances and scroll-region semantics.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

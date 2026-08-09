@@ -33,63 +33,64 @@
     </div>
 
     <div class="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(380px,0.95fr)]">
-        <div class="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm dark:border-white/10 dark:bg-zinc-900">
+        <x-admin.table-region
+            :label="__('Orders table')"
+            :scroll-hint="__('Scroll sideways to review customer, status, totals, and actions.')"
+        >
             @if ($orders->isNotEmpty())
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-zinc-200 text-sm dark:divide-white/10">
-                        <thead class="bg-zinc-50 text-left text-xs uppercase text-zinc-500 dark:bg-white/5 dark:text-zinc-400">
-                            <tr>
-                                <th scope="col" class="px-4 py-3 font-semibold">{{ __('Order') }}</th>
-                                <th scope="col" class="px-4 py-3 font-semibold">{{ __('Customer') }}</th>
-                                <th scope="col" class="px-4 py-3 font-semibold">{{ __('Status') }}</th>
-                                <th scope="col" class="px-4 py-3 font-semibold">{{ __('Total') }}</th>
-                                <th scope="col" class="px-4 py-3 text-right font-semibold">{{ __('Actions') }}</th>
+                <table class="min-w-full divide-y divide-zinc-200 text-sm dark:divide-white/10">
+                    <thead class="bg-zinc-50 text-left text-xs uppercase text-zinc-500 dark:bg-white/5 dark:text-zinc-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Order') }}</th>
+                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Customer') }}</th>
+                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Status') }}</th>
+                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Total') }}</th>
+                            <th scope="col" class="px-4 py-3 text-right font-semibold">{{ __('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-200 dark:divide-white/10">
+                        @foreach ($orders as $order)
+                            <tr wire:key="order-{{ $order->id }}" class="@if ($selectedOrder?->id === $order->id) bg-teal-50/70 dark:bg-teal-400/10 @endif">
+                                <td class="px-4 py-4 align-top">
+                                    <div class="font-semibold text-zinc-950 dark:text-white">{{ $order->order_number }}</div>
+                                    <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $order->placed_at?->format('M j, Y H:i') ?? __('Not placed') }}</div>
+                                    <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $order->shippingMethod?->name ?? __('No shipping method') }}</div>
+                                </td>
+                                <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
+                                    <span class="block font-medium text-zinc-950 dark:text-white">{{ $order->customer_name }}</span>
+                                    <span class="block text-xs">{{ $order->email }}</span>
+                                    <span class="block text-xs">{{ trans_choice(':count item|:count items', $order->items->count(), ['count' => $order->items->count()]) }}</span>
+                                </td>
+                                <td class="px-4 py-4 align-top">
+                                    <div class="flex flex-wrap gap-2">
+                                        <x-ui.badge :tone="in_array($order->status, [App\Enums\OrderStatus::Delivered, App\Enums\OrderStatus::Shipped], true) ? 'teal' : ($order->status === App\Enums\OrderStatus::Cancelled ? 'rose' : 'amber')">
+                                            {{ str($order->status->value)->replace('_', ' ')->title() }}
+                                        </x-ui.badge>
+                                        <x-ui.badge :tone="$order->payment_status === App\Enums\PaymentStatus::Paid ? 'teal' : ($order->payment_status === App\Enums\PaymentStatus::Failed ? 'rose' : 'neutral')">
+                                            {{ str($order->payment_status->value)->replace('_', ' ')->title() }}
+                                        </x-ui.badge>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 align-top font-semibold text-zinc-950 dark:text-white">
+                                    {{ $order->currency_code }} {{ number_format((float) $order->grand_total, 2) }}
+                                </td>
+                                <td class="px-4 py-4 align-top">
+                                    <div class="flex justify-end">
+                                        <x-ui.button size="sm" variant="secondary" wire:click="selectOrder({{ $order->id }})">{{ __('Review') }}</x-ui.button>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-200 dark:divide-white/10">
-                            @foreach ($orders as $order)
-                                <tr wire:key="order-{{ $order->id }}" class="@if ($selectedOrder?->id === $order->id) bg-teal-50/70 dark:bg-teal-400/10 @endif">
-                                    <td class="px-4 py-4 align-top">
-                                        <div class="font-semibold text-zinc-950 dark:text-white">{{ $order->order_number }}</div>
-                                        <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $order->placed_at?->format('M j, Y H:i') ?? __('Not placed') }}</div>
-                                        <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $order->shippingMethod?->name ?? __('No shipping method') }}</div>
-                                    </td>
-                                    <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
-                                        <span class="block font-medium text-zinc-950 dark:text-white">{{ $order->customer_name }}</span>
-                                        <span class="block text-xs">{{ $order->email }}</span>
-                                        <span class="block text-xs">{{ trans_choice(':count item|:count items', $order->items->count(), ['count' => $order->items->count()]) }}</span>
-                                    </td>
-                                    <td class="px-4 py-4 align-top">
-                                        <div class="flex flex-wrap gap-2">
-                                            <x-ui.badge :tone="in_array($order->status, [App\Enums\OrderStatus::Delivered, App\Enums\OrderStatus::Shipped], true) ? 'teal' : ($order->status === App\Enums\OrderStatus::Cancelled ? 'rose' : 'amber')">
-                                                {{ str($order->status->value)->replace('_', ' ')->title() }}
-                                            </x-ui.badge>
-                                            <x-ui.badge :tone="$order->payment_status === App\Enums\PaymentStatus::Paid ? 'teal' : ($order->payment_status === App\Enums\PaymentStatus::Failed ? 'rose' : 'neutral')">
-                                                {{ str($order->payment_status->value)->replace('_', ' ')->title() }}
-                                            </x-ui.badge>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 align-top font-semibold text-zinc-950 dark:text-white">
-                                        {{ $order->currency_code }} {{ number_format((float) $order->grand_total, 2) }}
-                                    </td>
-                                    <td class="px-4 py-4 align-top">
-                                        <div class="flex justify-end">
-                                            <x-ui.button size="sm" variant="secondary" wire:click="selectOrder({{ $order->id }})">{{ __('Review') }}</x-ui.button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                <div class="border-t border-zinc-200 px-4 py-3 dark:border-white/10">
+                <x-slot:footer>
                     {{ $orders->links() }}
-                </div>
+                </x-slot:footer>
             @else
                 <x-ui.empty-state :title="__('No orders found')" :description="__('Orders will appear here once customers complete checkout.')" />
             @endif
-        </div>
+        </x-admin.table-region>
 
         <aside class="space-y-4">
             @if ($selectedOrder)

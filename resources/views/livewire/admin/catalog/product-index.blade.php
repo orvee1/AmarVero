@@ -269,87 +269,88 @@
         </div>
     @endcan
 
-    <div class="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm dark:border-white/10 dark:bg-zinc-900">
+    <x-admin.table-region
+        :label="__('Products table')"
+        :scroll-hint="__('Scroll sideways to review product status, pricing, catalog counts, and actions.')"
+    >
         @if ($products->isNotEmpty())
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-zinc-200 text-sm dark:divide-white/10">
-                    <thead class="bg-zinc-50 text-left text-xs uppercase text-zinc-500 dark:bg-white/5 dark:text-zinc-400">
-                        <tr>
-                            <th scope="col" class="px-4 py-3 font-semibold">
-                                <span class="sr-only">{{ __('Select') }}</span>
-                            </th>
-                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Product') }}</th>
-                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Brand') }}</th>
-                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Status') }}</th>
-                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Price') }}</th>
-                            <th scope="col" class="px-4 py-3 font-semibold">{{ __('Catalog') }}</th>
-                            <th scope="col" class="px-4 py-3 text-right font-semibold">{{ __('Actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-zinc-200 dark:divide-white/10">
-                        @foreach ($products as $product)
-                            <tr wire:key="product-{{ $product->id }}">
-                                <td class="px-4 py-4 align-top">
-                                    <input wire:model="selectedProductIds" type="checkbox" value="{{ $product->id }}" class="size-4 rounded border-zinc-300 text-teal-700 focus:ring-teal-600" aria-label="{{ __('Select :product', ['product' => $product->name]) }}">
-                                </td>
-                                <td class="px-4 py-4 align-top">
-                                    <div class="font-semibold text-zinc-950 dark:text-white">{{ $product->name }}</div>
-                                    <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $product->base_sku ?: $product->slug }}</div>
-                                    <div class="mt-2 flex flex-wrap gap-2">
-                                        @if ($product->is_featured)
-                                            <x-ui.badge tone="amber">{{ __('Featured') }}</x-ui.badge>
-                                        @endif
-                                        @if ($product->is_new_arrival)
-                                            <x-ui.badge tone="teal">{{ __('New') }}</x-ui.badge>
-                                        @endif
-                                        @if ($product->is_best_seller)
-                                            <x-ui.badge>{{ __('Best seller') }}</x-ui.badge>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">{{ $product->brand?->name ?? __('No brand') }}</td>
-                                <td class="px-4 py-4 align-top">
-                                    <x-ui.badge :tone="$product->status === App\Enums\ProductStatus::Published ? 'teal' : ($product->status === App\Enums\ProductStatus::Scheduled ? 'amber' : 'neutral')">
-                                        {{ str($product->status->value)->replace('_', ' ')->title() }}
-                                    </x-ui.badge>
-                                    <div class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">{{ $product->published_at?->format('M j, Y H:i') ?? __('Not published') }}</div>
-                                </td>
-                                <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
-                                    @if ($product->sale_price)
-                                        <span class="font-semibold text-zinc-950 dark:text-white">BDT {{ number_format((float) $product->sale_price, 2) }}</span>
-                                        <span class="block text-xs line-through">BDT {{ number_format((float) $product->regular_price, 2) }}</span>
-                                    @elseif ($product->regular_price)
-                                        BDT {{ number_format((float) $product->regular_price, 2) }}
-                                    @else
-                                        {{ __('Not priced') }}
+            <table class="min-w-full divide-y divide-zinc-200 text-sm dark:divide-white/10">
+                <thead class="bg-zinc-50 text-left text-xs uppercase text-zinc-500 dark:bg-white/5 dark:text-zinc-400">
+                    <tr>
+                        <th scope="col" class="px-4 py-3 font-semibold">
+                            <span class="sr-only">{{ __('Select') }}</span>
+                        </th>
+                        <th scope="col" class="px-4 py-3 font-semibold">{{ __('Product') }}</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">{{ __('Brand') }}</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">{{ __('Status') }}</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">{{ __('Price') }}</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">{{ __('Catalog') }}</th>
+                        <th scope="col" class="px-4 py-3 text-right font-semibold">{{ __('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-200 dark:divide-white/10">
+                    @foreach ($products as $product)
+                        <tr wire:key="product-{{ $product->id }}">
+                            <td class="px-4 py-4 align-top">
+                                <input wire:model="selectedProductIds" type="checkbox" value="{{ $product->id }}" class="size-4 rounded border-zinc-300 text-teal-700 focus:ring-teal-600" aria-label="{{ __('Select :product', ['product' => $product->name]) }}">
+                            </td>
+                            <td class="px-4 py-4 align-top">
+                                <div class="font-semibold text-zinc-950 dark:text-white">{{ $product->name }}</div>
+                                <div class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $product->base_sku ?: $product->slug }}</div>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    @if ($product->is_featured)
+                                        <x-ui.badge tone="amber">{{ __('Featured') }}</x-ui.badge>
                                     @endif
-                                </td>
-                                <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
-                                    <span class="block">{{ trans_choice(':count category|:count categories', $product->categories_count, ['count' => number_format($product->categories_count)]) }}</span>
-                                    <span class="block text-xs text-zinc-500 dark:text-zinc-400">{{ trans_choice(':count variant|:count variants', $product->variants_count, ['count' => number_format($product->variants_count)]) }} / {{ trans_choice(':count image|:count images', $product->images_count, ['count' => number_format($product->images_count)]) }}</span>
-                                </td>
-                                <td class="px-4 py-4 align-top">
-                                    <div class="flex justify-end gap-2">
-                                        @can('update', $product)
-                                            <x-ui.button size="sm" variant="secondary" wire:click="edit({{ $product->id }})">{{ __('Edit') }}</x-ui.button>
-                                        @endcan
+                                    @if ($product->is_new_arrival)
+                                        <x-ui.badge tone="teal">{{ __('New') }}</x-ui.badge>
+                                    @endif
+                                    @if ($product->is_best_seller)
+                                        <x-ui.badge>{{ __('Best seller') }}</x-ui.badge>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">{{ $product->brand?->name ?? __('No brand') }}</td>
+                            <td class="px-4 py-4 align-top">
+                                <x-ui.badge :tone="$product->status === App\Enums\ProductStatus::Published ? 'teal' : ($product->status === App\Enums\ProductStatus::Scheduled ? 'amber' : 'neutral')">
+                                    {{ str($product->status->value)->replace('_', ' ')->title() }}
+                                </x-ui.badge>
+                                <div class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">{{ $product->published_at?->format('M j, Y H:i') ?? __('Not published') }}</div>
+                            </td>
+                            <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
+                                @if ($product->sale_price)
+                                    <span class="font-semibold text-zinc-950 dark:text-white">BDT {{ number_format((float) $product->sale_price, 2) }}</span>
+                                    <span class="block text-xs line-through">BDT {{ number_format((float) $product->regular_price, 2) }}</span>
+                                @elseif ($product->regular_price)
+                                    BDT {{ number_format((float) $product->regular_price, 2) }}
+                                @else
+                                    {{ __('Not priced') }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-4 align-top text-zinc-600 dark:text-zinc-300">
+                                <span class="block">{{ trans_choice(':count category|:count categories', $product->categories_count, ['count' => number_format($product->categories_count)]) }}</span>
+                                <span class="block text-xs text-zinc-500 dark:text-zinc-400">{{ trans_choice(':count variant|:count variants', $product->variants_count, ['count' => number_format($product->variants_count)]) }} / {{ trans_choice(':count image|:count images', $product->images_count, ['count' => number_format($product->images_count)]) }}</span>
+                            </td>
+                            <td class="px-4 py-4 align-top">
+                                <div class="flex justify-end gap-2">
+                                    @can('update', $product)
+                                        <x-ui.button size="sm" variant="secondary" wire:click="edit({{ $product->id }})">{{ __('Edit') }}</x-ui.button>
+                                    @endcan
 
-                                        @can('delete', $product)
-                                            <x-ui.button size="sm" variant="danger" wire:click="delete({{ $product->id }})" wire:confirm="{{ __('Delete this product?') }}">{{ __('Delete') }}</x-ui.button>
-                                        @endcan
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                    @can('delete', $product)
+                                        <x-ui.button size="sm" variant="danger" wire:click="delete({{ $product->id }})" wire:confirm="{{ __('Delete this product?') }}">{{ __('Delete') }}</x-ui.button>
+                                    @endcan
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-            <div class="border-t border-zinc-200 px-4 py-3 dark:border-white/10">
+            <x-slot:footer>
                 {{ $products->links() }}
-            </div>
+            </x-slot:footer>
         @else
             <x-ui.empty-state :title="__('No products found')" :description="__('Create a product or adjust your filters to see results.')" />
         @endif
-    </div>
+    </x-admin.table-region>
 </section>

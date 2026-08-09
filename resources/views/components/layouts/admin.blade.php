@@ -3,13 +3,52 @@
     'breadcrumbs' => [],
 ])
 
+@php
+    $adminQuickLinks = array_values(array_filter([
+        ['label' => __('Overview'), 'url' => route('admin.dashboard'), 'allowed' => auth()->user()->can('dashboard.view')],
+        ['label' => __('Brands'), 'url' => route('admin.catalog.brands'), 'allowed' => auth()->user()->can('brands.view')],
+        ['label' => __('Categories'), 'url' => route('admin.catalog.categories'), 'allowed' => auth()->user()->can('categories.view')],
+        ['label' => __('Collections'), 'url' => route('admin.catalog.collections'), 'allowed' => auth()->user()->can('collections.view')],
+        ['label' => __('Attributes'), 'url' => route('admin.catalog.attributes'), 'allowed' => auth()->user()->can('attributes.view')],
+        ['label' => __('Products'), 'url' => route('admin.catalog.products'), 'allowed' => auth()->user()->can('products.view')],
+        ['label' => __('Variants'), 'url' => route('admin.catalog.variants'), 'allowed' => auth()->user()->can('product-variants.view')],
+        ['label' => __('Images'), 'url' => route('admin.catalog.images'), 'allowed' => auth()->user()->can('product-images.view')],
+        ['label' => __('Inventory'), 'url' => route('admin.catalog.inventory'), 'allowed' => auth()->user()->can('inventory.view')],
+        ['label' => __('Size guides'), 'url' => route('admin.catalog.size-guides'), 'allowed' => auth()->user()->can('size-guides.view')],
+        ['label' => __('Orders'), 'url' => route('admin.operations.orders'), 'allowed' => auth()->user()->can('orders.view')],
+        ['label' => __('Customers'), 'url' => route('admin.operations.customers'), 'allowed' => auth()->user()->can('customers.view')],
+        ['label' => __('Campaigns and coupons'), 'url' => route('admin.marketing'), 'allowed' => auth()->user()->can('campaigns.view') || auth()->user()->can('coupons.view') || auth()->user()->can('newsletter.view')],
+        ['label' => __('Announcements'), 'url' => route('admin.content.announcements'), 'allowed' => auth()->user()->can('announcement-bars.view')],
+        ['label' => __('Navigation'), 'url' => route('admin.content.navigation'), 'allowed' => auth()->user()->can('navigation-menus.view')],
+        ['label' => __('Homepage'), 'url' => route('admin.content.homepage'), 'allowed' => auth()->user()->can('homepage-sections.view')],
+        ['label' => __('Library'), 'url' => route('admin.content.library'), 'allowed' => auth()->user()->can('pages.view')],
+        ['label' => __('Footer'), 'url' => route('admin.content.footer'), 'allowed' => auth()->user()->can('footer-sections.view')],
+        ['label' => __('Store settings'), 'url' => route('admin.settings.store'), 'allowed' => auth()->user()->can('settings.view') || auth()->user()->can('shipping-settings.view')],
+        ['label' => __('Customer dashboard'), 'url' => route('dashboard'), 'allowed' => true],
+        ['label' => __('Profile settings'), 'url' => route('profile.edit'), 'allowed' => true],
+        ['label' => __('View storefront'), 'url' => route('home'), 'allowed' => true],
+    ], static fn (array $link): bool => $link['allowed']));
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         @include('partials.head', ['robots' => 'noindex, nofollow'])
     </head>
     <body
-        x-data="{ sidebarOpen: false, sidebarCollapsed: false }"
+        x-data="{
+            sidebarOpen: false,
+            openSidebar() {
+                this.sidebarOpen = true;
+                this.$nextTick(() => this.$refs.sidebarClose?.focus());
+            },
+            closeSidebar() {
+                this.sidebarOpen = false;
+                this.$nextTick(() => this.$refs.sidebarButton?.focus());
+            },
+        }"
+        x-on:keydown.escape.window="closeSidebar()"
+        x-effect="document.body.classList.toggle('overflow-hidden', sidebarOpen)"
         class="min-h-screen bg-zinc-100 text-zinc-950 antialiased dark:bg-zinc-950 dark:text-white"
     >
         <a href="#admin-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-zinc-950 focus:shadow-lg">
@@ -20,12 +59,14 @@
             x-show="sidebarOpen"
             x-transition.opacity
             class="fixed inset-0 z-40 bg-zinc-950/50 lg:hidden"
-            x-on:click="sidebarOpen = false"
+            x-on:click="closeSidebar()"
             aria-hidden="true"
         ></div>
 
         <aside
+            id="admin-sidebar"
             x-bind:class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+            aria-label="{{ __('Admin navigation') }}"
             class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-200 bg-white shadow-xl transition-transform duration-200 lg:translate-x-0 lg:shadow-none dark:border-white/10 dark:bg-zinc-900"
         >
             <div class="flex min-h-20 items-center justify-between gap-3 border-b border-zinc-200 px-4 dark:border-white/10">
@@ -34,14 +75,15 @@
                 <button
                     type="button"
                     class="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 lg:hidden dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
-                    x-on:click="sidebarOpen = false"
+                    x-ref="sidebarClose"
+                    x-on:click="closeSidebar()"
                     aria-label="{{ __('Close admin navigation') }}"
                 >
-                    <span aria-hidden="true">X</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <nav class="flex-1 space-y-6 overflow-y-auto px-4 py-5" aria-label="{{ __('Admin navigation') }}">
+            <nav class="flex-1 space-y-6 overflow-y-auto px-4 py-5" aria-label="{{ __('Admin navigation') }}" x-on:click="if ($event.target.closest('a') && window.innerWidth < 1024) closeSidebar()">
                 <div>
                     <p class="px-3 text-xs font-semibold uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{{ __('Workspace') }}</p>
                     <div class="mt-2 grid gap-1">
@@ -226,7 +268,10 @@
                         <button
                             type="button"
                             class="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-900 hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 lg:hidden dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
-                            x-on:click="sidebarOpen = true"
+                            x-ref="sidebarButton"
+                            x-on:click="openSidebar()"
+                            x-bind:aria-expanded="sidebarOpen.toString()"
+                            aria-controls="admin-sidebar"
                         >
                             {{ __('Menu') }}
                         </button>
@@ -248,6 +293,30 @@
                             <h1 class="truncate text-xl font-semibold text-zinc-950 dark:text-white">{{ $title ?? __('Admin') }}</h1>
                         </div>
                     </div>
+
+                    <form
+                        x-data="{ quickNav: '' }"
+                        x-on:submit.prevent="if (quickNav) window.location.href = quickNav"
+                        role="search"
+                        class="hidden min-w-0 flex-1 items-center justify-end gap-2 md:flex"
+                    >
+                        <label for="admin-quick-navigation" class="sr-only">{{ __('Search admin navigation') }}</label>
+                        <input
+                            id="admin-quick-navigation"
+                            x-model="quickNav"
+                            list="admin-quick-navigation-options"
+                            type="search"
+                            autocomplete="off"
+                            class="min-h-10 w-full max-w-sm rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 dark:border-white/15 dark:bg-white/10 dark:text-white"
+                            placeholder="{{ __('Search admin navigation') }}"
+                        >
+                        <datalist id="admin-quick-navigation-options">
+                            @foreach ($adminQuickLinks as $link)
+                                <option value="{{ $link['url'] }}" label="{{ $link['label'] }}"></option>
+                            @endforeach
+                        </datalist>
+                        <x-ui.button type="submit" size="sm" variant="secondary">{{ __('Go') }}</x-ui.button>
+                    </form>
 
                     @isset($actions)
                         <div class="flex shrink-0 flex-wrap items-center justify-end gap-2">

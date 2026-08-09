@@ -191,7 +191,12 @@
                 </div>
 
                 @if ($recentOrders->isNotEmpty())
-                    <div class="mt-5 overflow-x-auto">
+                    <div
+                        role="region"
+                        aria-label="{{ __('Recent orders table') }}"
+                        tabindex="0"
+                        class="mt-5 overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-teal-500"
+                    >
                         <table class="min-w-full divide-y divide-zinc-200 text-left text-sm dark:divide-white/10">
                             <thead class="text-xs uppercase text-zinc-500 dark:text-zinc-400">
                                 <tr>
