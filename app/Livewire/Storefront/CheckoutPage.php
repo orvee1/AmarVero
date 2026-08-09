@@ -5,6 +5,8 @@ namespace App\Livewire\Storefront;
 use App\Models\User;
 use App\Support\Checkout\CheckoutManager;
 use App\Support\Checkout\ShippingRateResolver;
+use App\Support\Security\RateLimitGuard;
+use App\Support\Security\SecurityRateLimits;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -64,9 +66,19 @@ class CheckoutPage extends Component
     {
         $this->resetErrorBag('couponCode');
         $this->couponMessage = null;
+        $rateLimitKey = SecurityRateLimits::couponKey($this->user(), $this->form['email']);
 
         try {
+            app(RateLimitGuard::class)->ensureAllowed(
+                $rateLimitKey,
+                SecurityRateLimits::CouponMaxAttempts,
+                SecurityRateLimits::CouponDecaySeconds,
+                'couponCode',
+                'Too many coupon attempts. Try again in :seconds seconds.',
+            );
+
             $result = app(CheckoutManager::class)->applyCouponCode($this->couponCode, $this->user(), $this->form['email']);
+            app(RateLimitGuard::class)->reset($rateLimitKey);
             $this->couponCode = $result['coupon']->code;
             $this->couponMessage = $result['message'];
         } catch (ValidationException $exception) {

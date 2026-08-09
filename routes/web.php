@@ -35,6 +35,7 @@ use App\Livewire\Storefront\CheckoutPage;
 use App\Livewire\Storefront\ProductListing;
 use App\Livewire\Storefront\ProductShow;
 use App\Livewire\Storefront\WishlistPage;
+use App\Support\Security\SecurityRateLimits;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', StorefrontController::class)->name('home');
@@ -42,7 +43,7 @@ Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('robots.txt', RobotsController::class)->name('robots');
 Route::get('pages/{page:slug}', [StorefrontController::class, 'page'])->name('pages.show');
 Route::livewire('shop', ProductListing::class)->name('shop');
-Route::livewire('search', ProductListing::class)->name('search');
+Route::livewire('search', ProductListing::class)->middleware('throttle:'.SecurityRateLimits::StorefrontSearch)->name('search');
 Route::livewire('sale', ProductListing::class)->name('sale');
 Route::livewire('featured', ProductListing::class)->name('featured');
 Route::livewire('new-arrivals', ProductListing::class)->name('new-arrivals');
@@ -53,13 +54,13 @@ Route::livewire('brands/{slug}', ProductListing::class)->name('brands.show');
 Route::livewire('collections/{slug}', ProductListing::class)->name('collections.show');
 Route::livewire('products/{product:slug}', ProductShow::class)->name('products.show');
 Route::livewire('cart', CartPage::class)->name('cart');
-Route::post('cart/items', [CartItemController::class, 'store'])->name('cart.items.store');
-Route::livewire('checkout', CheckoutPage::class)->name('checkout');
+Route::post('cart/items', [CartItemController::class, 'store'])->middleware('throttle:'.SecurityRateLimits::CartWrites)->name('cart.items.store');
+Route::livewire('checkout', CheckoutPage::class)->middleware('throttle:'.SecurityRateLimits::Checkout)->name('checkout');
 Route::get('orders/{order:order_number}/thank-you', OrderConfirmationController::class)->name('checkout.thank-you');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('wishlist', WishlistPage::class)->name('wishlist');
-    Route::post('wishlist/items', [WishlistItemController::class, 'store'])->name('wishlist.items.store');
+    Route::post('wishlist/items', [WishlistItemController::class, 'store'])->middleware('throttle:'.SecurityRateLimits::WishlistWrites)->name('wishlist.items.store');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -70,7 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('account/reviews', ReviewManager::class)->name('account.reviews');
 });
 
-Route::middleware(['auth', 'verified', 'admin'])
+Route::middleware(['auth', 'verified', 'admin', 'throttle:'.SecurityRateLimits::AdminRequests])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

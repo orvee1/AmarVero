@@ -290,6 +290,15 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Applied accessible table regions to the product and order admin tables, plus the admin dashboard recent-orders table.
 - Added `PhaseFifteenAdminUxTest` to verify the admin shell navigation affordances and scroll-region semantics.
 
+## Phase 16 Log
+
+- Added web security headers for content sniffing protection, frame restrictions, referrer policy, permissions policy, and HTTPS-only HSTS.
+- Added centralized security rate-limit keys and a reusable guard for validation-friendly Livewire throttling.
+- Registered named rate limiters for storefront search, cart writes, wishlist writes, checkout, and admin requests.
+- Applied route throttles to security-sensitive storefront and admin surfaces.
+- Rate-limited checkout coupon attempts and customer review submissions per shopper context.
+- Added `PhaseSixteenSecurityTest` to verify headers, route throttles, coupon throttling, and review throttling.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

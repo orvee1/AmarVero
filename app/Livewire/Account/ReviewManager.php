@@ -6,6 +6,8 @@ use App\Enums\ReviewStatus;
 use App\Models\OrderItem;
 use App\Models\ProductReview;
 use App\Models\User;
+use App\Support\Security\RateLimitGuard;
+use App\Support\Security\SecurityRateLimits;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -68,6 +70,14 @@ class ReviewManager extends Component
 
     public function save(): void
     {
+        app(RateLimitGuard::class)->ensureAllowed(
+            SecurityRateLimits::reviewKey($this->user()),
+            SecurityRateLimits::ReviewMaxAttempts,
+            SecurityRateLimits::ReviewDecaySeconds,
+            'reviews',
+            'Too many review submissions. Try again in :seconds seconds.',
+        );
+
         $validated = $this->validate();
         $this->ensurePurchasedProduct($validated['form']);
 

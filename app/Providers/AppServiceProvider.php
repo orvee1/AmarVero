@@ -7,13 +7,17 @@ use App\Models\User;
 use App\Support\AdminPermissions;
 use App\Support\Cart\CartManager;
 use App\Support\Cart\WishlistManager;
+use App\Support\Security\SecurityRateLimits;
 use App\Support\Storefront\StorefrontContent;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -36,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         $this->configureAuthorization();
         $this->configureEvents();
+        $this->configureRateLimiting();
         $this->configureViewComposers();
     }
 
@@ -97,5 +102,23 @@ class AppServiceProvider extends ServiceProvider
     protected function configureEvents(): void
     {
         Event::listen(Login::class, MergeGuestCartOnLogin::class);
+    }
+
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for(SecurityRateLimits::StorefrontSearch, fn (Request $request): Limit => Limit::perMinute(40)
+            ->by(SecurityRateLimits::requestKey($request, SecurityRateLimits::StorefrontSearch)));
+
+        RateLimiter::for(SecurityRateLimits::CartWrites, fn (Request $request): Limit => Limit::perMinute(30)
+            ->by(SecurityRateLimits::requestKey($request, SecurityRateLimits::CartWrites)));
+
+        RateLimiter::for(SecurityRateLimits::WishlistWrites, fn (Request $request): Limit => Limit::perMinute(30)
+            ->by(SecurityRateLimits::requestKey($request, SecurityRateLimits::WishlistWrites)));
+
+        RateLimiter::for(SecurityRateLimits::Checkout, fn (Request $request): Limit => Limit::perMinute(40)
+            ->by(SecurityRateLimits::requestKey($request, SecurityRateLimits::Checkout)));
+
+        RateLimiter::for(SecurityRateLimits::AdminRequests, fn (Request $request): Limit => Limit::perMinute(180)
+            ->by(SecurityRateLimits::requestKey($request, SecurityRateLimits::AdminRequests)));
     }
 }
