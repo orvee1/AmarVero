@@ -25,6 +25,7 @@
                     alt="{{ $primaryImage->alt_text ?: $product->name }}"
                     class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                     width="640"
                     height="800"
                 >
@@ -40,6 +41,7 @@
                     alt=""
                     class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100"
                     loading="lazy"
+                    decoding="async"
                     width="640"
                     height="800"
                 >

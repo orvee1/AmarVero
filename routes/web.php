@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Seo\RobotsController;
+use App\Http\Controllers\Seo\SitemapController;
 use App\Http\Controllers\Storefront\CartItemController;
 use App\Http\Controllers\Storefront\OrderConfirmationController;
 use App\Http\Controllers\Storefront\WishlistItemController;
@@ -36,6 +38,8 @@ use App\Livewire\Storefront\WishlistPage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', StorefrontController::class)->name('home');
+Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('robots.txt', RobotsController::class)->name('robots');
 Route::get('pages/{page:slug}', [StorefrontController::class, 'page'])->name('pages.show');
 Route::livewire('shop', ProductListing::class)->name('shop');
 Route::livewire('search', ProductListing::class)->name('search');

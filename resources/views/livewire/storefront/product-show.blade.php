@@ -18,7 +18,7 @@
             <span aria-hidden="true">/</span>
             <a class="hover:text-zinc-950 dark:hover:text-white" href="{{ route('shop') }}">{{ __('Shop') }}</a>
             <span aria-hidden="true">/</span>
-            <span>{{ $product->name }}</span>
+            <span aria-current="page">{{ $product->name }}</span>
         </nav>
 
         @if (session('status'))
@@ -36,6 +36,8 @@
                             alt="{{ $product->name }}"
                             width="960"
                             height="1200"
+                            decoding="async"
+                            fetchpriority="high"
                             class="aspect-[4/5] h-full w-full object-cover"
                         >
                     @else
@@ -58,6 +60,7 @@
                                         height="300"
                                         class="aspect-[4/5] h-full w-full object-cover"
                                         loading="lazy"
+                                        decoding="async"
                                     >
                                 </div>
                             @endif

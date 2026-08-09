@@ -1,10 +1,10 @@
-<x-layouts.storefront :title="$page->seo_title ?: $page->title">
+<x-layouts.storefront :title="$page->seo_title ?: $page->title" :seo="$seo">
     <article class="bg-white dark:bg-zinc-950">
         <x-ui.container class="max-w-3xl py-12 lg:py-16">
             <nav class="text-sm text-zinc-500 dark:text-zinc-400" aria-label="{{ __('Breadcrumbs') }}">
                 <a class="hover:text-zinc-950 dark:hover:text-white" href="{{ route('home') }}">{{ __('Home') }}</a>
                 <span aria-hidden="true">/</span>
-                <span>{{ $page->title }}</span>
+                <span aria-current="page">{{ $page->title }}</span>
             </nav>
 
             <h1 class="mt-6 text-4xl font-semibold leading-tight text-zinc-950 dark:text-white">{{ $page->title }}</h1>

@@ -1,5 +1,6 @@
 @props([
     'title' => null,
+    'seo' => null,
 ])
 
 <!DOCTYPE html>

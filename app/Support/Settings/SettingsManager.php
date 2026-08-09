@@ -4,9 +4,12 @@ namespace App\Support\Settings;
 
 use App\Models\SiteSetting;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class SettingsManager
 {
+    private const string ValuesCacheKey = 'site_settings.defined_values';
+
     /**
      * @return array<string, array{group: string, type: string, default: mixed, public: bool, label: string}>
      */
@@ -39,6 +42,14 @@ class SettingsManager
      * @return array<string, mixed>
      */
     public function values(): array
+    {
+        return Cache::remember(self::ValuesCacheKey, now()->addMinutes(10), fn (): array => $this->uncachedValues());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function uncachedValues(): array
     {
         $settings = SiteSetting::query()
             ->whereIn('key', array_keys($this->definitions()))
@@ -76,7 +87,7 @@ class SettingsManager
         $definition = $this->definitions()[$key];
         $normalizedValue = $this->normalizedValue($value, $definition['type']);
 
-        return SiteSetting::query()->updateOrCreate(
+        $setting = SiteSetting::query()->updateOrCreate(
             ['key' => $key],
             [
                 'group' => $definition['group'],
@@ -85,6 +96,10 @@ class SettingsManager
                 'is_public' => $definition['public'],
             ],
         );
+
+        Cache::forget(self::ValuesCacheKey);
+
+        return $setting;
     }
 
     /**

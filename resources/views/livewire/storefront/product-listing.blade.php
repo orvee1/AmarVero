@@ -5,7 +5,7 @@
                 <nav class="text-sm text-zinc-500 dark:text-zinc-400" aria-label="{{ __('Breadcrumbs') }}">
                     <a class="hover:text-zinc-950 dark:hover:text-white" href="{{ route('home') }}">{{ __('Home') }}</a>
                     <span aria-hidden="true">/</span>
-                    <span>{{ $pageTitle }}</span>
+                    <span aria-current="page">{{ $pageTitle }}</span>
                 </nav>
                 <h1 class="mt-4 text-4xl font-semibold leading-tight text-zinc-950 dark:text-white">{{ $pageTitle }}</h1>
                 <p class="mt-3 max-w-2xl text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ $pageDescription }}</p>

@@ -250,6 +250,17 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Updated the admin layout with permission-aware Operations, Marketing, and Settings navigation.
 - Added `PhaseElevenAdminOperationsTest` to verify Phase 11 routes, order audit writes, customer profile edits, marketing workflows, settings persistence, and shipping-rate setup.
 
+## Phase 12 Log
+
+- Added `App\Support\Seo\SeoManager` for settings-backed titles, descriptions, canonical URLs, robots directives, Open Graph/Twitter tags, favicon overrides, and JSON-LD payloads.
+- Added Organization, WebSite, BreadcrumbList, Product, Offer, and real AggregateRating structured data for storefront, listing, CMS, and product detail pages.
+- Added `/sitemap.xml` and `/robots.txt` routes backed by native Laravel controllers without adding an SEO package.
+- Added sitemap coverage for public storefront routes, active categories, active brands, active collections, published products, and published CMS pages while excluding draft/private surfaces.
+- Added noindex defaults for admin, auth, and customer account layouts, plus noindex filtered/search listing variants with clean canonical URLs.
+- Cached defined site settings and invalidated that cache on settings saves to reduce repeated SEO/settings queries.
+- Added async image decoding and breadcrumb `aria-current` refinements to key storefront templates.
+- Added `PhaseTwelveSeoTest` to verify metadata, structured data, listing robots behavior, sitemap XML, and robots.txt.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

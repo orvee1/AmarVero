@@ -1,4 +1,4 @@
-<x-layouts.storefront :title="__('Premium footwear for daily movement')">
+<x-layouts.storefront :title="__('Premium footwear for daily movement')" :seo="$seo">
     @if ($heroSlides->isNotEmpty())
         <section class="bg-white dark:bg-zinc-950">
             @foreach ($heroSlides->take(1) as $slide)
@@ -24,6 +24,7 @@
                             alt="{{ $slide->meta['image_alt'] ?? $slide->title }}"
                             width="1536"
                             height="1024"
+                            decoding="async"
                             class="aspect-[3/2] h-full w-full object-cover"
                             fetchpriority="high"
                         >
@@ -66,6 +67,7 @@
                         alt="{{ __('Black leather low-top sneakers on a clean studio surface.') }}"
                         width="1536"
                         height="1024"
+                        decoding="async"
                         class="aspect-[3/2] h-full w-full object-cover"
                         fetchpriority="high"
                     >

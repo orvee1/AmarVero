@@ -9,6 +9,7 @@ use App\Models\ProductVariant;
 use App\Models\User;
 use App\Support\Cart\CartManager;
 use App\Support\Cart\WishlistManager;
+use App\Support\Seo\SeoManager;
 use App\Support\Storefront\ProductCatalog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -135,6 +136,7 @@ class ProductShow extends Component
             'reviewRows' => $this->reviewRows($ratingDistribution, $reviewCount),
         ])->layout('components.layouts.storefront', [
             'title' => $product->seo_title ?: $product->name,
+            'seo' => app(SeoManager::class)->product($product, $catalog, $selectedVariant),
         ]);
     }
 

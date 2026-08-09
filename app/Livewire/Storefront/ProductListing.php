@@ -5,6 +5,7 @@ namespace App\Livewire\Storefront;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ProductCollection;
+use App\Support\Seo\SeoManager;
 use App\Support\Storefront\ProductCatalog;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
@@ -150,6 +151,12 @@ class ProductListing extends Component
             'perPageOptions' => [12, 24, 36],
         ]))->layout('components.layouts.storefront', [
             'title' => $this->pageTitle(),
+            'seo' => app(SeoManager::class)->listing(
+                title: $this->pageTitle(),
+                description: $this->pageDescription(),
+                canonical: $this->canonicalUrl(),
+                noindex: $this->shouldNoindexListing(),
+            ),
         ]);
     }
 
@@ -220,6 +227,31 @@ class ProductListing extends Component
             'best-sellers' => __('Best-seller picks curated for discovery.'),
             default => __('Explore published Amarvero footwear with live filters and responsive product cards.'),
         };
+    }
+
+    protected function canonicalUrl(): string
+    {
+        return match ($this->context) {
+            'category' => route('categories.show', ['slug' => $this->slug]),
+            'brand' => route('brands.show', ['slug' => $this->slug]),
+            'collection' => route('collections.show', ['slug' => $this->slug]),
+            'search' => route('search'),
+            'sale' => route('sale'),
+            'featured' => route('featured'),
+            'new-arrivals' => route('new-arrivals'),
+            'best-sellers' => route('best-sellers'),
+            'gender' => route('gender.show', ['slug' => $this->slug]),
+            default => route('shop'),
+        };
+    }
+
+    protected function shouldNoindexListing(): bool
+    {
+        return $this->context === 'search'
+            || $this->sort !== 'newest'
+            || $this->perPage !== 12
+            || $this->viewMode !== 'grid'
+            || $this->activeFilters() !== [];
     }
 
     /**
