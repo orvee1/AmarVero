@@ -8,13 +8,15 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-zinc-50 text-zinc-950 antialiased dark:bg-zinc-950 dark:text-white">
+    <body class="storefront-shell antialiased">
+        <div class="storefront-texture" aria-hidden="true"></div>
+
         <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-zinc-950 focus:shadow-lg">
             {{ __('Skip to content') }}
         </a>
 
         @if ($storefrontAnnouncement)
-            <div class="border-b border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
+            <div class="storefront-layer storefront-announcement border-b border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
                 <x-ui.container class="flex min-h-10 flex-wrap items-center justify-center gap-2 text-center text-sm font-medium">
                     <span>{{ $storefrontAnnouncement->message }}</span>
 
@@ -26,14 +28,14 @@
                 </x-ui.container>
             </div>
         @else
-            <div class="border-b border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
+            <div class="storefront-layer storefront-announcement border-b border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
                 <x-ui.container class="flex min-h-10 items-center justify-center text-center text-sm font-medium">
                     {{ __('Premium footwear essentials for city days, work hours, and weekend plans.') }}
                 </x-ui.container>
             </div>
         @endif
 
-        <header class="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 backdrop-blur dark:border-white/10 dark:bg-zinc-950/90">
+        <header class="storefront-layer storefront-header sticky top-0 z-40 border-b border-zinc-200 backdrop-blur">
             <x-ui.container class="flex min-h-20 items-center justify-between gap-4">
                 <x-brand-lockup />
 
@@ -88,7 +90,7 @@
                         {{ __('Menu') }}
                     </summary>
 
-                    <nav class="absolute right-0 mt-3 grid w-52 gap-1 rounded-lg border border-zinc-200 bg-white p-2 shadow-xl dark:border-white/10 dark:bg-zinc-900" aria-label="{{ __('Mobile navigation') }}">
+                    <nav class="storefront-card absolute right-0 mt-3 grid w-52 gap-1 rounded-lg border border-zinc-200 bg-white p-2 shadow-xl dark:border-white/10 dark:bg-zinc-900" aria-label="{{ __('Mobile navigation') }}">
                         @if ($storefrontNavigation && $storefrontNavigation->items->isNotEmpty())
                             @foreach ($storefrontNavigation->items as $item)
                                 @if (($item->meta['mobile_visible'] ?? true) === true)
@@ -136,11 +138,11 @@
             </x-ui.container>
         </header>
 
-        <main id="main-content">
+        <main id="main-content" class="storefront-layer">
             {{ $slot }}
         </main>
 
-        <footer class="border-t border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
+        <footer class="storefront-layer storefront-footer border-t border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
             <x-ui.container class="grid gap-8 py-10 lg:grid-cols-[1.2fr_2fr]">
                 <div>
                     <x-brand-lockup />

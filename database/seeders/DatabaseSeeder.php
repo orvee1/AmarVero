@@ -14,7 +14,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolePermissionSeeder::class,
             AdminUserSeeder::class,
-            EcommerceDemoSeeder::class,
+            DemoStoreSettingsSeeder::class,
+            DemoCatalogSeeder::class,
+            DemoMarketingSeeder::class,
+            DemoStorefrontContentSeeder::class,
+            DemoCustomerOrderSeeder::class,
         ]);
     }
 }

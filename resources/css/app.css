@@ -59,6 +59,171 @@
     }
 }
 
+@layer components {
+    .storefront-shell {
+        --storefront-bg: #030303;
+        --storefront-panel: rgba(12, 12, 12, 0.88);
+        --storefront-panel-soft: rgba(18, 18, 18, 0.78);
+        --storefront-border: rgba(255, 255, 255, 0.12);
+        --storefront-border-strong: rgba(255, 255, 255, 0.2);
+        --storefront-text: #f7f3ea;
+        --storefront-muted: #b9b4aa;
+        --storefront-dim: #8f897f;
+        --storefront-accent: #d8cdb8;
+        --storefront-accent-strong: #f4ead8;
+
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+            linear-gradient(180deg, rgba(3, 3, 3, 0.8), rgba(3, 3, 3, 0.96) 38%, #030303),
+            linear-gradient(125deg, rgba(255, 255, 255, 0.045), transparent 34%),
+            #030303;
+        color: var(--storefront-text);
+    }
+
+    .storefront-texture {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            url("data:image/svg+xml,%3Csvg width='960' height='1280' viewBox='0 0 960 1280' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-linecap='round'%3E%3Cpath d='M-120 890 C 60 750 165 845 300 695 S 625 500 1080 585' stroke-opacity='.09'/%3E%3Cpath d='M-110 940 C 80 800 190 900 330 735 S 655 555 1080 640' stroke-opacity='.075'/%3E%3Cpath d='M-100 990 C 100 845 215 950 360 780 S 685 610 1080 695' stroke-opacity='.06'/%3E%3Cpath d='M-75 1045 C 130 895 250 1000 395 830 S 715 670 1080 760' stroke-opacity='.05'/%3E%3Cpath d='M70 1180 C 140 980 250 950 380 900 S 630 755 1000 845' stroke-opacity='.05'/%3E%3Cpath d='M400 -80 C 550 90 520 210 680 330 S 845 490 1030 450' stroke-opacity='.08'/%3E%3Cpath d='M500 -60 C 620 105 595 240 730 355 S 865 525 1040 505' stroke-opacity='.055'/%3E%3C/g%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: min(96rem, 115vw) auto;
+        background-position: left -16rem top -4rem;
+        opacity: 0.95;
+    }
+
+    .storefront-layer {
+        position: relative;
+        z-index: 1;
+    }
+
+    .storefront-announcement,
+    .storefront-header,
+    .storefront-footer {
+        border-color: var(--storefront-border) !important;
+        background: rgba(3, 3, 3, 0.84) !important;
+        color: var(--storefront-text);
+    }
+
+    .storefront-header {
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 48px rgba(0, 0, 0, 0.42);
+    }
+
+    .storefront-footer {
+        background: rgba(5, 5, 5, 0.96) !important;
+    }
+
+    .storefront-hero-section,
+    .storefront-section {
+        background: transparent !important;
+    }
+
+    .storefront-band {
+        border-color: var(--storefront-border) !important;
+        background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02) 42%, rgba(0, 0, 0, 0.3)),
+            rgba(10, 10, 10, 0.92) !important;
+    }
+
+    .storefront-card,
+    .storefront-shell .bg-white,
+    .storefront-shell .bg-zinc-900 {
+        border-color: var(--storefront-border) !important;
+        background: var(--storefront-panel) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 56px rgba(0, 0, 0, 0.28);
+    }
+
+    .storefront-shell .bg-zinc-50,
+    .storefront-shell .bg-zinc-100 {
+        background: rgba(6, 6, 6, 0.72) !important;
+    }
+
+    .storefront-shell .bg-zinc-950 {
+        background: #030303 !important;
+    }
+
+    .storefront-shell .border-zinc-200,
+    .storefront-shell .border-zinc-300,
+    .storefront-shell .border-white\/10,
+    .storefront-shell .border-white\/15 {
+        border-color: var(--storefront-border) !important;
+    }
+
+    .storefront-shell .text-zinc-950,
+    .storefront-shell .text-zinc-900 {
+        color: var(--storefront-text) !important;
+    }
+
+    .storefront-shell .text-zinc-800,
+    .storefront-shell .text-zinc-700,
+    .storefront-shell .text-zinc-600 {
+        color: var(--storefront-muted) !important;
+    }
+
+    .storefront-shell .text-zinc-500,
+    .storefront-shell .text-zinc-400,
+    .storefront-shell .text-zinc-300 {
+        color: var(--storefront-dim) !important;
+    }
+
+    .storefront-shell a.bg-zinc-950,
+    .storefront-shell button.bg-zinc-950 {
+        border-color: var(--storefront-accent-strong) !important;
+        background: linear-gradient(180deg, var(--storefront-accent-strong), var(--storefront-accent)) !important;
+        color: #050505 !important;
+    }
+
+    .storefront-shell a.bg-zinc-950:hover,
+    .storefront-shell button.bg-zinc-950:hover {
+        background: linear-gradient(180deg, #fff8e8, #e6d7bd) !important;
+    }
+
+    .storefront-shell .hover\:bg-zinc-100:hover,
+    .storefront-shell .hover\:bg-zinc-50:hover,
+    .storefront-shell .hover\:bg-white\/5:hover,
+    .storefront-shell .hover\:bg-white\/10:hover,
+    .storefront-shell .hover\:bg-white\/15:hover {
+        background-color: rgba(255, 255, 255, 0.075) !important;
+    }
+
+    .storefront-shell input,
+    .storefront-shell select,
+    .storefront-shell textarea {
+        border-color: var(--storefront-border) !important;
+        background: rgba(4, 4, 4, 0.86) !important;
+        color: var(--storefront-text) !important;
+    }
+
+    .storefront-shell input::placeholder,
+    .storefront-shell textarea::placeholder {
+        color: rgba(185, 180, 170, 0.72);
+    }
+
+    .storefront-hero-media {
+        position: relative;
+        overflow: hidden;
+        border-color: var(--storefront-border-strong) !important;
+        background: #050505 !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 28px 70px rgba(0, 0, 0, 0.52);
+    }
+
+    .storefront-hero-media::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        pointer-events: none;
+        background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.38)),
+            linear-gradient(115deg, rgba(255, 255, 255, 0.06), transparent 32%, rgba(0, 0, 0, 0.28));
+    }
+
+    .storefront-hero-media img {
+        filter: saturate(0.82) contrast(1.08) brightness(0.62);
+    }
+}
+
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }

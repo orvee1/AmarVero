@@ -489,62 +489,70 @@ class EcommerceDemoSeeder extends Seeder
             ['name' => 'Primary navigation', 'is_active' => true],
         );
 
-        $this->menuItem($menu, 'Shop', route('shop'), 1);
-        $this->menuItem($menu, 'Men', null, 2, $catalog['categories']['men']);
-        $this->menuItem($menu, 'Women', null, 3, $catalog['categories']['women']);
-        $this->menuItem($menu, 'Sale', route('sale'), 4);
+        $this->menuItem($menu, 'Home', route('home'), 1);
+        $this->menuItem($menu, 'Shop', route('shop'), 2);
+        $this->menuItem($menu, 'Men', null, 3, $catalog['categories']['men']);
+        $this->menuItem($menu, 'Women', null, 4, $catalog['categories']['women']);
+        $this->menuItem($menu, 'New arrivals', route('new-arrivals'), 5);
+        $this->menuItem($menu, 'Sale', route('sale'), 6);
 
-        HeroSlide::query()->updateOrCreate(
-            ['title' => 'Footwear built for daily movement'],
-            [
-                'subtitle' => 'Original demo merchandising for secure footwear commerce.',
-                'image_path' => self::PlaceholderImage,
-                'mobile_image_path' => self::PlaceholderImage,
-                'cta_label' => 'Shop footwear',
-                'cta_url' => route('shop'),
-                'status' => ContentStatus::Published,
-                'starts_at' => now()->subDay(),
-                'ends_at' => now()->addMonth(),
-                'sort_order' => 1,
-                'meta' => ['image_alt' => 'Studio footwear still life for Amarvero'],
-            ],
-        );
-
-        HomepageSection::query()->updateOrCreate(
-            ['name' => 'Featured daily rotation'],
-            [
-                'type' => 'product_block',
-                'title' => 'Daily rotation',
-                'subtitle' => 'Seeded products ready for storefront discovery.',
-                'content' => [
-                    'description' => 'Browse featured and new-arrival footwear from the demo catalog.',
-                    'cta_label' => 'View featured',
-                    'cta_url' => route('featured'),
+        foreach ($this->heroSlides() as $slide) {
+            HeroSlide::query()->updateOrCreate(
+                ['title' => $slide['title']],
+                [
+                    'subtitle' => $slide['subtitle'],
+                    'image_path' => self::PlaceholderImage,
+                    'mobile_image_path' => self::PlaceholderImage,
+                    'cta_label' => $slide['cta_label'],
+                    'cta_url' => $slide['cta_url'],
+                    'status' => ContentStatus::Published,
+                    'starts_at' => now()->subDay(),
+                    'ends_at' => now()->addMonth(),
+                    'sort_order' => $slide['sort_order'],
+                    'meta' => ['image_alt' => $slide['image_alt']],
                 ],
-                'status' => ContentStatus::Published,
-                'starts_at' => now()->subDay(),
-                'ends_at' => now()->addMonth(),
-                'sort_order' => 1,
-            ],
-        );
+            );
+        }
 
-        PromotionalBanner::query()->updateOrCreate(
-            ['name' => 'Home campaign banner'],
-            [
-                'campaign_id' => Campaign::query()->where('slug', 'demo-launch')->value('id'),
-                'placement' => 'home',
-                'title' => 'Welcome offer',
-                'subtitle' => 'Use WELCOME500 on eligible demo pairs.',
-                'image_path' => self::PlaceholderImage,
-                'mobile_image_path' => self::PlaceholderImage,
-                'cta_label' => 'Explore sale',
-                'cta_url' => route('sale'),
-                'status' => ContentStatus::Published,
-                'starts_at' => now()->subDay(),
-                'ends_at' => now()->addMonth(),
-                'sort_order' => 1,
-            ],
-        );
+        foreach ($this->homepageSections() as $section) {
+            HomepageSection::query()->updateOrCreate(
+                ['name' => $section['name']],
+                [
+                    'type' => $section['type'],
+                    'title' => $section['title'],
+                    'subtitle' => $section['subtitle'],
+                    'content' => [
+                        'description' => $section['description'],
+                        'cta_label' => $section['cta_label'],
+                        'cta_url' => $section['cta_url'],
+                    ],
+                    'status' => ContentStatus::Published,
+                    'starts_at' => now()->subDay(),
+                    'ends_at' => now()->addMonth(),
+                    'sort_order' => $section['sort_order'],
+                ],
+            );
+        }
+
+        foreach ($this->promotionalBanners() as $banner) {
+            PromotionalBanner::query()->updateOrCreate(
+                ['name' => $banner['name']],
+                [
+                    'campaign_id' => Campaign::query()->where('slug', 'demo-launch')->value('id'),
+                    'placement' => 'home',
+                    'title' => $banner['title'],
+                    'subtitle' => $banner['subtitle'],
+                    'image_path' => self::PlaceholderImage,
+                    'mobile_image_path' => self::PlaceholderImage,
+                    'cta_label' => $banner['cta_label'],
+                    'cta_url' => $banner['cta_url'],
+                    'status' => ContentStatus::Published,
+                    'starts_at' => now()->subDay(),
+                    'ends_at' => now()->addMonth(),
+                    'sort_order' => $banner['sort_order'],
+                ],
+            );
+        }
 
         foreach ($this->staticPages() as $page) {
             StaticPage::query()->updateOrCreate(
@@ -597,52 +605,56 @@ class EcommerceDemoSeeder extends Seeder
             );
         }
 
-        StoreLocation::query()->updateOrCreate(
-            ['name' => 'Amarvero Studio Dhaka'],
-            [
-                'phone' => '+8801700000000',
-                'email' => 'care@amarvero.test',
-                'line_one' => 'House 12, Demo Road',
-                'line_two' => 'Level 3',
-                'city' => 'Dhaka',
-                'region' => 'Dhaka',
-                'postal_code' => '1212',
-                'country_code' => 'BD',
-                'latitude' => 23.7805733,
-                'longitude' => 90.2792397,
-                'opening_hours' => ['Sat-Thu' => '10:00-20:00', 'Fri' => '14:00-20:00'],
-                'is_active' => true,
-                'sort_order' => 1,
-            ],
-        );
-
-        foreach (['Instagram' => 'https://example.test/instagram', 'Facebook' => 'https://example.test/facebook'] as $label => $url) {
-            SocialLink::query()->updateOrCreate(
-                ['platform' => strtolower($label)],
+        foreach ($this->storeLocations() as $index => $location) {
+            StoreLocation::query()->updateOrCreate(
+                ['name' => $location['name']],
                 [
-                    'label' => $label,
-                    'url' => $url,
+                    'phone' => $location['phone'],
+                    'email' => $location['email'],
+                    'line_one' => $location['line_one'],
+                    'line_two' => $location['line_two'],
+                    'city' => $location['city'],
+                    'region' => $location['region'],
+                    'postal_code' => $location['postal_code'],
+                    'country_code' => $location['country_code'],
+                    'latitude' => $location['latitude'],
+                    'longitude' => $location['longitude'],
+                    'opening_hours' => $location['opening_hours'],
                     'is_active' => true,
-                    'sort_order' => $label === 'Instagram' ? 1 : 2,
+                    'sort_order' => $index + 1,
                 ],
             );
         }
 
-        $footer = FooterSection::query()->updateOrCreate(
-            ['title' => 'Customer care'],
-            ['is_active' => true, 'sort_order' => 1],
-        );
-
-        foreach (['Shipping policy' => 'shipping-policy', 'Return policy' => 'return-policy', 'Privacy policy' => 'privacy-policy'] as $label => $slug) {
-            FooterLink::query()->updateOrCreate(
-                ['footer_section_id' => $footer->id, 'label' => $label],
+        foreach ($this->socialLinks() as $index => $socialLink) {
+            SocialLink::query()->updateOrCreate(
+                ['platform' => $socialLink['platform']],
                 [
-                    'url' => route('pages.show', ['page' => $slug]),
-                    'opens_new_tab' => false,
+                    'label' => $socialLink['label'],
+                    'url' => $socialLink['url'],
                     'is_active' => true,
-                    'sort_order' => array_search($slug, ['shipping-policy', 'return-policy', 'privacy-policy'], true) + 1,
+                    'sort_order' => $index + 1,
                 ],
             );
+        }
+
+        foreach ($this->footerSections() as $sectionIndex => $section) {
+            $footer = FooterSection::query()->updateOrCreate(
+                ['title' => $section['title']],
+                ['is_active' => true, 'sort_order' => $sectionIndex + 1],
+            );
+
+            foreach ($section['links'] as $linkIndex => $link) {
+                FooterLink::query()->updateOrCreate(
+                    ['footer_section_id' => $footer->id, 'label' => $link['label']],
+                    [
+                        'url' => $link['url'],
+                        'opens_new_tab' => $link['opens_new_tab'],
+                        'is_active' => true,
+                        'sort_order' => $linkIndex + 1,
+                    ],
+                );
+            }
         }
     }
 
@@ -967,6 +979,186 @@ class EcommerceDemoSeeder extends Seeder
     }
 
     /**
+     * @return list<array{title: string, subtitle: string, cta_label: string, cta_url: string, image_alt: string, sort_order: int}>
+     */
+    protected function heroSlides(): array
+    {
+        return [
+            [
+                'title' => 'Footwear built for daily movement',
+                'subtitle' => 'Original demo merchandising for secure footwear commerce, stocked catalog browsing, and customer-ready checkout.',
+                'cta_label' => 'Shop footwear',
+                'cta_url' => route('shop'),
+                'image_alt' => 'Studio footwear still life for Amarvero',
+                'sort_order' => 1,
+            ],
+            [
+                'title' => 'New pairs for city routines',
+                'subtitle' => 'Fresh silhouettes, practical materials, and seeded variants for testing the new-arrivals workflow.',
+                'cta_label' => 'View new arrivals',
+                'cta_url' => route('new-arrivals'),
+                'image_alt' => 'Premium sneakers staged for a new-arrivals campaign',
+                'sort_order' => 2,
+            ],
+            [
+                'title' => 'Sale-ready weekend rotation',
+                'subtitle' => 'Promotion content, coupon setup, and discounted products are all seeded for a fuller storefront.',
+                'cta_label' => 'Shop sale',
+                'cta_url' => route('sale'),
+                'image_alt' => 'Discounted weekend footwear campaign image',
+                'sort_order' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{name: string, type: string, title: string, subtitle: string, description: string, cta_label: string, cta_url: string, sort_order: int}>
+     */
+    protected function homepageSections(): array
+    {
+        return [
+            [
+                'name' => 'Featured daily rotation',
+                'type' => 'product_block',
+                'title' => 'Daily rotation',
+                'subtitle' => 'Seeded products ready for storefront discovery.',
+                'description' => 'Browse featured and new-arrival footwear from the demo catalog.',
+                'cta_label' => 'View featured',
+                'cta_url' => route('featured'),
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'New arrival edit',
+                'type' => 'collection_story',
+                'title' => 'New this week',
+                'subtitle' => 'Fresh stock, active variants, and published catalog filters.',
+                'description' => 'Use this section to confirm new-arrival merchandising is not empty after seeding.',
+                'cta_label' => 'Shop new arrivals',
+                'cta_url' => route('new-arrivals'),
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Office ready edit',
+                'type' => 'collection_story',
+                'title' => 'Office ready',
+                'subtitle' => 'Structured footwear for work hours and commute days.',
+                'description' => 'Seeded collections connect navigation, filters, sitemap, and merchandising surfaces.',
+                'cta_label' => 'View collection',
+                'cta_url' => route('collections.show', ['slug' => 'office-ready']),
+                'sort_order' => 3,
+            ],
+            [
+                'name' => 'Weekend light edit',
+                'type' => 'campaign_story',
+                'title' => 'Weekend light',
+                'subtitle' => 'Relaxed pairs for off-duty plans.',
+                'description' => 'Campaign banners, sale routes, and collection pages have data to render immediately.',
+                'cta_label' => 'Explore weekends',
+                'cta_url' => route('collections.show', ['slug' => 'weekend-light']),
+                'sort_order' => 4,
+            ],
+            [
+                'name' => 'Fit support edit',
+                'type' => 'support_block',
+                'title' => 'Fit support',
+                'subtitle' => 'Size guidance for a smoother first order.',
+                'description' => 'Static content pages are seeded so footer links and support surfaces do not lead nowhere.',
+                'cta_label' => 'Open size guide',
+                'cta_url' => route('pages.show', ['page' => 'size-guide']),
+                'sort_order' => 5,
+            ],
+            [
+                'name' => 'Checkout confidence edit',
+                'type' => 'trust_block',
+                'title' => 'Checkout confidence',
+                'subtitle' => 'Server-side totals, stock checks, order emails, and operations history.',
+                'description' => 'The seeded experience includes account, order, support, return, refund, and review records.',
+                'cta_label' => 'Read shipping policy',
+                'cta_url' => route('pages.show', ['page' => 'shipping-policy']),
+                'sort_order' => 6,
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{name: string, title: string, subtitle: string, cta_label: string, cta_url: string, sort_order: int}>
+     */
+    protected function promotionalBanners(): array
+    {
+        return [
+            [
+                'name' => 'Home campaign banner',
+                'title' => 'Welcome offer',
+                'subtitle' => 'Use WELCOME500 on eligible demo pairs over BDT 3,000.',
+                'cta_label' => 'Explore sale',
+                'cta_url' => route('sale'),
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'Daily rotation banner',
+                'title' => 'Daily pairs stocked',
+                'subtitle' => 'Published variants, images, inventory, and size guides are ready for browsing.',
+                'cta_label' => 'Shop daily rotation',
+                'cta_url' => route('collections.show', ['slug' => 'daily-rotation']),
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Office ready banner',
+                'title' => 'Work-ready finish',
+                'subtitle' => 'Loafers and clean sneakers make the seeded catalog feel complete from day one.',
+                'cta_label' => 'Shop office ready',
+                'cta_url' => route('collections.show', ['slug' => 'office-ready']),
+                'sort_order' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{title: string, links: list<array{label: string, url: string, opens_new_tab: bool}>}>
+     */
+    protected function footerSections(): array
+    {
+        return [
+            [
+                'title' => 'Shop',
+                'links' => [
+                    ['label' => 'New arrivals', 'url' => route('new-arrivals'), 'opens_new_tab' => false],
+                    ['label' => 'Best sellers', 'url' => route('best-sellers'), 'opens_new_tab' => false],
+                    ['label' => 'Sale', 'url' => route('sale'), 'opens_new_tab' => false],
+                    ['label' => 'Daily rotation', 'url' => route('collections.show', ['slug' => 'daily-rotation']), 'opens_new_tab' => false],
+                ],
+            ],
+            [
+                'title' => 'Customer care',
+                'links' => [
+                    ['label' => 'Shipping policy', 'url' => route('pages.show', ['page' => 'shipping-policy']), 'opens_new_tab' => false],
+                    ['label' => 'Return policy', 'url' => route('pages.show', ['page' => 'return-policy']), 'opens_new_tab' => false],
+                    ['label' => 'Refund policy', 'url' => route('pages.show', ['page' => 'refund-policy']), 'opens_new_tab' => false],
+                    ['label' => 'Size guide', 'url' => route('pages.show', ['page' => 'size-guide']), 'opens_new_tab' => false],
+                ],
+            ],
+            [
+                'title' => 'Company',
+                'links' => [
+                    ['label' => 'About Amarvero', 'url' => route('pages.show', ['page' => 'about']), 'opens_new_tab' => false],
+                    ['label' => 'Care guide', 'url' => route('pages.show', ['page' => 'care-guide']), 'opens_new_tab' => false],
+                    ['label' => 'Privacy policy', 'url' => route('pages.show', ['page' => 'privacy-policy']), 'opens_new_tab' => false],
+                    ['label' => 'Terms', 'url' => route('pages.show', ['page' => 'terms']), 'opens_new_tab' => false],
+                ],
+            ],
+            [
+                'title' => 'Account',
+                'links' => [
+                    ['label' => 'Sign in', 'url' => route('login'), 'opens_new_tab' => false],
+                    ['label' => 'Create account', 'url' => route('register'), 'opens_new_tab' => false],
+                    ['label' => 'Cart', 'url' => route('cart'), 'opens_new_tab' => false],
+                    ['label' => 'Wishlist', 'url' => route('wishlist'), 'opens_new_tab' => false],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @return list<array{slug: string, title: string, body: string, description: string}>
      */
     protected function staticPages(): array
@@ -978,6 +1170,8 @@ class EcommerceDemoSeeder extends Seeder
             ['slug' => 'refund-policy', 'title' => 'Refund Policy', 'body' => 'Refund records are managed by authorized administrators and linked to orders, payments, and return requests.', 'description' => 'Refund policy information for Amarvero demo orders.'],
             ['slug' => 'privacy-policy', 'title' => 'Privacy Policy', 'body' => 'Amarvero demo data is fictional. Production deployments should configure privacy practices to match real operations.', 'description' => 'Privacy policy placeholder for Amarvero production configuration.'],
             ['slug' => 'terms', 'title' => 'Terms and Conditions', 'body' => 'These demo terms describe a development storefront and should be replaced before production launch.', 'description' => 'Terms and conditions placeholder for Amarvero.'],
+            ['slug' => 'size-guide', 'title' => 'Size Guide', 'body' => 'Compare heel-to-toe measurements with seeded EU footwear sizes before checkout. Product pages also include assigned size-guide content.', 'description' => 'Footwear size guidance for Amarvero demo shoppers.'],
+            ['slug' => 'care-guide', 'title' => 'Care Guide', 'body' => 'Keep demo footwear clean with a soft cloth, avoid direct heat while drying, and store pairs away from moisture between wears.', 'description' => 'Footwear care guidance for Amarvero demo shoppers.'],
         ];
     }
 
@@ -990,6 +1184,9 @@ class EcommerceDemoSeeder extends Seeder
             ['group' => 'orders', 'question' => 'Can I track a demo order?', 'answer' => 'Yes. Seeded orders include status and shipment records visible in the admin and account areas.'],
             ['group' => 'returns', 'question' => 'How long is the return window?', 'answer' => 'The seeded settings use a seven-day return window that admins can adjust.'],
             ['group' => 'payments', 'question' => 'Are payment secrets stored in admin settings?', 'answer' => 'No. Demo settings avoid raw secrets and production credentials must live in environment configuration.'],
+            ['group' => 'fit', 'question' => 'Is there seeded size guidance?', 'answer' => 'Yes. Products are assigned a footwear size guide and the footer links to a seeded static size-guide page.'],
+            ['group' => 'catalog', 'question' => 'Will shop filters show values?', 'answer' => 'Yes. Demo brands, categories, collections, gender values, materials, colors, sizes, and stock are all seeded.'],
+            ['group' => 'support', 'question' => 'Are support pages included?', 'answer' => 'Yes. Shipping, return, refund, privacy, terms, size, and care pages are included so footer links render useful content.'],
         ];
     }
 
@@ -1002,6 +1199,9 @@ class EcommerceDemoSeeder extends Seeder
             ['title' => 'Secure checkout', 'subtitle' => 'Totals, discounts, shipping, and stock are recalculated server-side.', 'icon' => 'shield'],
             ['title' => 'Dynamic catalog', 'subtitle' => 'Products, variants, media, SEO, and merchandising are admin-managed.', 'icon' => 'sparkles'],
             ['title' => 'Operational audit trail', 'subtitle' => 'Orders include status events, payment events, notes, shipment, return, and refund records.', 'icon' => 'clipboard'],
+            ['title' => 'Customer communication', 'subtitle' => 'Checkout confirmations and order status emails are queued through Laravel mail.', 'icon' => 'mail'],
+            ['title' => 'Content-ready storefront', 'subtitle' => 'Hero slides, banners, homepage blocks, pages, benefits, testimonials, and footer groups are seeded.', 'icon' => 'layout'],
+            ['title' => 'Demo account included', 'subtitle' => 'A customer account includes an address, cart, wishlist, delivered order, shipment, refund record, and approved review.', 'icon' => 'user'],
         ];
     }
 
@@ -1013,6 +1213,58 @@ class EcommerceDemoSeeder extends Seeder
         return [
             ['name' => 'Rafi Demo', 'role' => 'Returning customer', 'quote' => 'The seeded account flow makes it easy to inspect orders, addresses, and reviews.'],
             ['name' => 'Mira Demo', 'role' => 'Product manager', 'quote' => 'Catalog and content management are connected enough to test a realistic launch workflow.'],
+            ['name' => 'Tania Demo', 'role' => 'Operations lead', 'quote' => 'The order workspace has payment events, status history, notes, shipments, returns, and refunds ready to inspect.'],
+            ['name' => 'Ayaan Demo', 'role' => 'Storefront reviewer', 'quote' => 'The homepage finally feels populated after seeding because every major content area has records.'],
+        ];
+    }
+
+    /**
+     * @return list<array{name: string, phone: string, email: string, line_one: string, line_two: string|null, city: string, region: string, postal_code: string, country_code: string, latitude: float, longitude: float, opening_hours: array<string, string>}>
+     */
+    protected function storeLocations(): array
+    {
+        return [
+            [
+                'name' => 'Amarvero Studio Dhaka',
+                'phone' => '+8801700000000',
+                'email' => 'care@amarvero.test',
+                'line_one' => 'House 12, Demo Road',
+                'line_two' => 'Level 3',
+                'city' => 'Dhaka',
+                'region' => 'Dhaka',
+                'postal_code' => '1212',
+                'country_code' => 'BD',
+                'latitude' => 23.7805733,
+                'longitude' => 90.2792397,
+                'opening_hours' => ['Sat-Thu' => '10:00-20:00', 'Fri' => '14:00-20:00'],
+            ],
+            [
+                'name' => 'Amarvero Pickup Chattogram',
+                'phone' => '+8801712222222',
+                'email' => 'chattogram@amarvero.test',
+                'line_one' => '22 Bay Commerce Avenue',
+                'line_two' => null,
+                'city' => 'Chattogram',
+                'region' => 'Chattogram',
+                'postal_code' => '4000',
+                'country_code' => 'BD',
+                'latitude' => 22.356851,
+                'longitude' => 91.783182,
+                'opening_hours' => ['Sat-Thu' => '11:00-19:00', 'Fri' => 'Closed'],
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{platform: string, label: string, url: string}>
+     */
+    protected function socialLinks(): array
+    {
+        return [
+            ['platform' => 'instagram', 'label' => 'Instagram', 'url' => 'https://example.test/instagram'],
+            ['platform' => 'facebook', 'label' => 'Facebook', 'url' => 'https://example.test/facebook'],
+            ['platform' => 'tiktok', 'label' => 'TikTok', 'url' => 'https://example.test/tiktok'],
+            ['platform' => 'pinterest', 'label' => 'Pinterest', 'url' => 'https://example.test/pinterest'],
         ];
     }
 }

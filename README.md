@@ -307,6 +307,22 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added Markdown order email templates with order numbers, status, payment state, shipping method, totals, and item snapshots.
 - Added `PhaseSeventeenOrderCommunicationTest` to verify checkout mail dispatch, admin status mail dispatch, note-only suppression, and rendered email content.
 
+## Phase 18 Log
+
+- Split demo data into explicit section seeders for store settings, catalog, marketing, storefront content, and customer/order experience.
+- Updated `DatabaseSeeder` to call each demo section seeder directly after roles and the admin user.
+- Expanded seeded storefront content with multiple hero slides, homepage blocks, promotional banners, benefits, testimonials, store locations, social links, static support pages, and footer groups.
+- Added richer navigation, footer, FAQ, size-guide, and care-guide records so seeded public pages no longer fall back to the sparse empty storefront.
+- Added `PhaseEighteenDemoSectionSeedersTest` to verify the section seeders populate every visible storefront area.
+
+## Phase 19 Log
+
+- Added a storefront-only noir color theme inspired by black layered contour imagery.
+- Added a fixed subtle contour texture, smoky charcoal surfaces, low-contrast borders, muted text, and warm ivory customer CTAs.
+- Scoped the theme to `components.layouts.storefront` so admin screens keep their existing operational styling.
+- Applied theme hooks to the storefront shell, header, footer, homepage hero, promotional bands, cards, forms, and hero media.
+- Added `PhaseNineteenStorefrontThemeTest` to verify the user-side theme shell and CSS hooks remain in place.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.

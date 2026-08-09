@@ -1,6 +1,6 @@
 <x-layouts.storefront :title="__('Premium footwear for daily movement')" :seo="$seo">
     @if ($heroSlides->isNotEmpty())
-        <section class="bg-white dark:bg-zinc-950">
+        <section class="storefront-hero-section bg-white dark:bg-zinc-950">
             @foreach ($heroSlides->take(1) as $slide)
                 <x-ui.container class="grid min-h-[calc(100vh-7.5rem)] items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:py-16">
                     <div class="max-w-2xl">
@@ -18,7 +18,7 @@
                         @endif
                     </div>
 
-                    <div class="overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 shadow-sm dark:border-white/10 dark:bg-zinc-900">
+                    <div class="storefront-hero-media overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 shadow-sm dark:border-white/10 dark:bg-zinc-900">
                         <img
                             src="{{ $storefrontContent->mediaUrl($slide->image_path) }}"
                             alt="{{ $slide->meta['image_alt'] ?? $slide->title }}"
@@ -33,7 +33,7 @@
             @endforeach
         </section>
     @else
-        <section class="bg-white dark:bg-zinc-950">
+        <section class="storefront-hero-section bg-white dark:bg-zinc-950">
             <x-ui.container class="grid min-h-[calc(100vh-7.5rem)] items-center gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:py-16">
                 <div class="max-w-2xl">
                     <x-ui.badge tone="teal">{{ __('Original Amarvero storefront') }}</x-ui.badge>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <div class="overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 shadow-sm dark:border-white/10 dark:bg-zinc-900">
+                <div class="storefront-hero-media overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 shadow-sm dark:border-white/10 dark:bg-zinc-900">
                     <img
                         src="{{ asset('images/storefront/hero-footwear.png') }}"
                         alt="{{ __('Black leather low-top sneakers on a clean studio surface.') }}"
@@ -77,7 +77,7 @@
     @endif
 
     @if ($promotionalBanners->isNotEmpty())
-        <section class="border-y border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
+        <section class="storefront-band border-y border-zinc-200 bg-zinc-950 text-white dark:border-white/10">
             <x-ui.container class="grid gap-6 py-10">
                 @foreach ($promotionalBanners as $banner)
                     <article class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
@@ -99,10 +99,10 @@
     @endif
 
     @if ($homepageSections->isNotEmpty())
-        <section class="bg-zinc-50 dark:bg-zinc-900/50">
+        <section class="storefront-section bg-zinc-50 dark:bg-zinc-900/50">
             <x-ui.container class="grid gap-6 py-12 md:grid-cols-3">
                 @foreach ($homepageSections as $section)
-                    <article class="rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                    <article class="storefront-card rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
                         <x-ui.badge>{{ str($section->type)->replace('_', ' ')->title() }}</x-ui.badge>
 
                         @if ($section->title)
@@ -127,17 +127,17 @@
             </x-ui.container>
         </section>
     @else
-        <section class="border-y border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900/50">
+        <section class="storefront-section border-y border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900/50">
             <x-ui.container class="grid gap-6 py-12 md:grid-cols-3">
-                <article class="rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                <article class="storefront-card rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
                     <h2 class="text-base font-semibold text-zinc-950 dark:text-white">{{ __('Everyday pairs') }}</h2>
                     <p class="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ __('Clean silhouettes and comfortable profiles for repeat wear across busy days.') }}</p>
                 </article>
-                <article class="rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                <article class="storefront-card rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
                     <h2 class="text-base font-semibold text-zinc-950 dark:text-white">{{ __('Work-ready finish') }}</h2>
                     <p class="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ __('Structured materials, calm colorways, and clear details for professional routines.') }}</p>
                 </article>
-                <article class="rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+                <article class="storefront-card rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
                     <h2 class="text-base font-semibold text-zinc-950 dark:text-white">{{ __('Weekend rotation') }}</h2>
                     <p class="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ __('Versatile footwear stories that can expand into collections, campaigns, and launches.') }}</p>
                 </article>
@@ -146,10 +146,10 @@
     @endif
 
     @if ($serviceBenefits->isNotEmpty() || $testimonials->isNotEmpty() || $storeLocations->isNotEmpty())
-        <section class="bg-white dark:bg-zinc-950">
+        <section class="storefront-section bg-white dark:bg-zinc-950">
             <x-ui.container class="grid gap-8 py-12 lg:grid-cols-3">
                 @foreach ($serviceBenefits as $benefit)
-                    <article class="rounded-lg border border-zinc-200 p-6 dark:border-white/10">
+                    <article class="storefront-card rounded-lg border border-zinc-200 p-6 dark:border-white/10">
                         <h2 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $benefit->title }}</h2>
                         @if ($benefit->subtitle)
                             <p class="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ $benefit->subtitle }}</p>
@@ -158,14 +158,14 @@
                 @endforeach
 
                 @foreach ($testimonials as $testimonial)
-                    <article class="rounded-lg border border-zinc-200 p-6 dark:border-white/10">
+                    <article class="storefront-card rounded-lg border border-zinc-200 p-6 dark:border-white/10">
                         <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ $testimonial->quote }}</p>
                         <p class="mt-4 text-sm font-semibold text-zinc-950 dark:text-white">{{ $testimonial->name }}</p>
                     </article>
                 @endforeach
 
                 @foreach ($storeLocations as $location)
-                    <article class="rounded-lg border border-zinc-200 p-6 dark:border-white/10">
+                    <article class="storefront-card rounded-lg border border-zinc-200 p-6 dark:border-white/10">
                         <h2 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $location->name }}</h2>
                         <p class="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{{ $location->line_one }}, {{ $location->city }}</p>
                     </article>
