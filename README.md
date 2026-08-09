@@ -274,6 +274,15 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Added `PhaseThirteenSeedersTest` to verify factory persistence, seeded admin credentials/roles, idempotent dataset counts, order-operation records, and seeded storefront/sitemap visibility.
 - Documented local seeding expectations and final QA commands.
 
+## Phase 14 Log
+
+- Expanded the admin dashboard into a period-filtered operations dashboard with validated presets and custom date ranges.
+- Added `App\Support\Admin\AdminDashboardMetrics` to keep revenue, net sales, AOV, customer, order-status, catalog, sales-leader, coupon, stock-risk, and recent-order queries out of the controller.
+- Added current-versus-previous-period trend labels for KPI cards.
+- Added best-selling products, top categories, top brands, coupon usage, order pipeline, and inventory watchlist sections to the dashboard.
+- Added `DashboardOverviewRequest` authorization and validation for dashboard filters.
+- Added `PhaseFourteenDashboardTest` to verify dashboard analytics rendering and custom date validation.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.
