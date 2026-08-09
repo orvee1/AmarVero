@@ -20,6 +20,7 @@ use App\Models\ProductVariant;
 use App\Models\ShippingMethod;
 use App\Models\User;
 use App\Support\Cart\CartManager;
+use App\Support\Orders\OrderNotificationManager;
 use App\Support\Storefront\ProductCatalog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -203,7 +204,7 @@ class CheckoutManager
     {
         $paymentMethod = $this->paymentMethodFrom((string) $checkout['payment_method']);
 
-        return DB::transaction(function () use ($checkout, $paymentMethod, $user): Order {
+        $order = DB::transaction(function () use ($checkout, $paymentMethod, $user): Order {
             $currentCart = $this->activeCart();
             $cart = Cart::query()
                 ->whereKey($currentCart->id)
@@ -243,6 +244,10 @@ class CheckoutManager
 
             return $order->load(['addresses', 'items', 'payments.events', 'statusEvents', 'shippingMethod']);
         });
+
+        app(OrderNotificationManager::class)->sendOrderConfirmation($order);
+
+        return $order;
     }
 
     protected function activeCart(): Cart

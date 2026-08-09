@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\User;
+use App\Support\Orders\OrderNotificationManager;
 
 class AdminOrderManager
 {
@@ -30,7 +31,13 @@ class AdminOrderManager
             'note' => $note,
         ]);
 
-        return $order->refresh();
+        $order = $order->refresh();
+
+        if ($fromStatus !== $status) {
+            app(OrderNotificationManager::class)->sendOrderStatusUpdated($order, $fromStatus, $status);
+        }
+
+        return $order;
     }
 
     public function updatePaymentStatus(Order $order, PaymentStatus $status, User $user, ?string $note = null): Order

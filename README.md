@@ -299,6 +299,14 @@ Super Admin receives every seeded permission. Other roles receive module-appropr
 - Rate-limited checkout coupon attempts and customer review submissions per shopper context.
 - Added `PhaseSixteenSecurityTest` to verify headers, route throttles, coupon throttling, and review throttling.
 
+## Phase 17 Log
+
+- Added queued transactional order email infrastructure with reusable order notification dispatch.
+- Added customer order confirmation emails after successful checkout transactions.
+- Added customer order status update emails when admins move orders through the operations workflow.
+- Added Markdown order email templates with order numbers, status, payment state, shipping method, totals, and item snapshots.
+- Added `PhaseSeventeenOrderCommunicationTest` to verify checkout mail dispatch, admin status mail dispatch, note-only suppression, and rendered email content.
+
 ## Deployment Notes
 
 Use a production MySQL database, queue worker, configured mail transport, storage disk, and real environment secrets. Laravel Cloud is a suitable deployment option for Laravel applications. Run `php artisan config:cache`, `php artisan route:cache`, a queue worker, and `npm run build` as part of production deployment.
